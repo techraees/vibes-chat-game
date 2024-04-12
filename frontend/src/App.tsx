@@ -17,6 +17,7 @@ const environment = process.env.NODE_ENV
 if (environment !== 'production' && appConfig.enableMock) {
     mockServer({ environment })
 }
+
 function App() {
     return (
         <Provider store={store}>
