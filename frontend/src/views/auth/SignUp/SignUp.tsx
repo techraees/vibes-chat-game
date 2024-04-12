@@ -5,7 +5,7 @@ const SignUp = () => {
         <>
             <div className="mb-8">
                 <h3 className="mb-1">Sign Up</h3>
-                <p>And lets get started with your free trial</p>
+                <p>And unlock the full experience!</p>
             </div>
             <SignUpForm disableSubmit={false} />
         </>

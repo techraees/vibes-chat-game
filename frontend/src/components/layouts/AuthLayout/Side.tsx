@@ -27,7 +27,7 @@ const Side = ({ children, content, ...rest }: SideProps) => {
                         </div>
                     </div>
                     <p className="text-lg text-white opacity-80">
-                    Step into the world of infinite possibilities with our virtual avatar chat! Engage, explore, and connect with others in a whole new dimension. Your avatar is your passport to endless conversations and experiences.
+                        Step into the world of infinite possibilities with our virtual avatar chat! Engage, explore, and connect with others in a whole new dimension. Your avatar is your passport to endless conversations and experiences.
                     </p>
                 </div>
                 <span className="text-white">
