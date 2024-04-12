@@ -16,13 +16,13 @@ interface SignUpFormProps extends CommonProps {
 }
 
 type SignUpFormSchema = {
-    userName: string
+    username: string
     password: string
     email: string
 }
 
 const validationSchema = Yup.object().shape({
-    userName: Yup.string().required('Please enter your username'),
+    username: Yup.string().required('Please enter your username'),
     email: Yup.string()
         .email('Invalid email')
         .required('Please enter your email'),
@@ -44,9 +44,9 @@ const SignUpForm = (props: SignUpFormProps) => {
         values: SignUpFormSchema,
         setSubmitting: (isSubmitting: boolean) => void,
     ) => {
-        const { userName, password, email } = values
+        const { username, password, email } = values
         setSubmitting(true)
-        const result = await signUp({ userName, password, email })
+        const result = await signUp({ username, password, email })
 
         if (result?.status === 'failed') {
             setMessage(result.message)
@@ -64,7 +64,7 @@ const SignUpForm = (props: SignUpFormProps) => {
             )}
             <Formik
                 initialValues={{
-                    userName: '',
+                    username: '',
                     password: '',
                     confirmPassword: '',
                     email: '',
@@ -82,15 +82,15 @@ const SignUpForm = (props: SignUpFormProps) => {
                     <Form>
                         <FormContainer>
                             <FormItem
-                                label="Username"
-                                invalid={errors.userName && touched.userName}
-                                errorMessage={errors.userName}
+                                label="username"
+                                invalid={errors.username && touched.username}
+                                errorMessage={errors.username}
                             >
                                 <Field
                                     type="text"
                                     autoComplete="off"
-                                    name="userName"
-                                    placeholder="Username"
+                                    name="username"
+                                    placeholder="username"
                                     component={Input}
                                 />
                             </FormItem>
