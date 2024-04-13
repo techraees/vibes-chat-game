@@ -42,7 +42,7 @@ export const signup = async (req: express.Request, res: express.Response) => {
         // Generate and send token
         if (newUser) {
             generateAndSendToken(newUser._id, res);
-            await newUser.save();
+            // await newUser.save();
 
             return res.status(201).json({
                 user: newUser,
