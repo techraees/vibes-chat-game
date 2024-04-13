@@ -24,6 +24,11 @@ export type SignUpCredential = {
     password: string
 }
 
+export type SignOut = {
+    token: string
+    username: string
+}
+
 export type ForgotPassword = {
     email: string
 }

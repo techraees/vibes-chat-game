@@ -122,8 +122,12 @@ function useAuth() {
                 username: '',
                 email: '',
                 authority: [],
+                vCoins: 0,
+                vCard: 0,
+                married: 0,
             }),
         )
+
         navigate(appConfig.unAuthenticatedEntryPath)
     }
 
