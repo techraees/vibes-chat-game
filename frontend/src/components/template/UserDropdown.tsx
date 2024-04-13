@@ -4,7 +4,12 @@ import withHeaderItem from '@/utils/hoc/withHeaderItem'
 import useAuth from '@/utils/hooks/useAuth'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames'
-import { HiOutlineLogout, HiOutlineUser } from 'react-icons/hi'
+import {
+    HiOutlineLogout,
+    HiOutlineUser,
+    HiOutlineSupport,
+    HiOutlinePuzzle,
+} from 'react-icons/hi'
 import type { CommonProps } from '@/@types/common'
 import { useAppSelector } from '@/store'
 
@@ -14,7 +19,23 @@ type DropdownList = {
     icon: JSX.Element
 }
 
-const dropdownItemList: DropdownList[] = []
+const dropdownItemList: DropdownList[] = [
+    {
+        label: 'Profile',
+        path: '/profile',
+        icon: <HiOutlineUser />,
+    },
+    {
+        label: 'Settings',
+        path: '/settings',
+        icon: <HiOutlinePuzzle />,
+    },
+    {
+        label: 'Help',
+        path: '/help',
+        icon: <HiOutlineSupport />,
+    },
+]
 
 const _UserDropdown = ({ className }: CommonProps) => {
     const { signOut } = useAuth()
@@ -70,7 +91,7 @@ const _UserDropdown = ({ className }: CommonProps) => {
                         </Link>
                     </Dropdown.Item>
                 ))}
-                {/* <Dropdown.Item variant="divider" /> */}
+                <Dropdown.Item variant="divider" />
                 <Dropdown.Item
                     eventKey="Sign Out"
                     className="gap-2"
