@@ -46,13 +46,20 @@ export const signup = async (req: express.Request, res: express.Response) => {
 
             return res.status(201).json({
                 user: newUser,
-                token: res.locals.token,
             });
         } else {
             return res.status(500).json({ message: "Something went wrong" });
         }
     } catch (error) {
         console.log(`Error in signup controller: ${error}`);
+        return res.status(500).json({ message: "Something went wrong" });
+    }
+};
+
+export const signin = async (req: express.Request, res: express.Response) => {
+    try {
+    } catch (error) {
+        console.log(`Error in signin controller: ${error}`);
         return res.status(500).json({ message: "Something went wrong" });
     }
 };
