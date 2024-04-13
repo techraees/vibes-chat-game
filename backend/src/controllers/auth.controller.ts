@@ -41,11 +41,12 @@ export const signup = async (req: express.Request, res: express.Response) => {
 
         // Generate and send token
         if (newUser) {
-            generateAndSendToken(newUser._id, res);
-            // await newUser.save();
+            const token = generateAndSendToken(newUser._id);
+            await newUser.save();
 
             return res.status(201).json({
                 user: newUser,
+                token: token,
             });
         } else {
             return res.status(500).json({ message: "Something went wrong" });
@@ -58,6 +59,18 @@ export const signup = async (req: express.Request, res: express.Response) => {
 
 export const signin = async (req: express.Request, res: express.Response) => {
     try {
+        const { username, password } = req.body;
+
+        const user = await User.findOne({ username });
+
+        const isPasswordCorrect = await bcrypt.compare(
+            password,
+            user?.password || ""
+        );
+
+        if (!isPasswordCorrect) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
     } catch (error) {
         console.log(`Error in signin controller: ${error}`);
         return res.status(500).json({ message: "Something went wrong" });
