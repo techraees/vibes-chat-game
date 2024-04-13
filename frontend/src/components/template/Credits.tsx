@@ -1,12 +1,30 @@
 import { useAppSelector } from '@/store'
+import Tag from '@/components/ui/Tag'
+import { HiFire, HiOutlineTag } from 'react-icons/hi'
 
 const Credits = () => {
     const { vCard, vCoins } = useAppSelector((state) => state.auth.user)
 
     return (
-        <div>
-            <span>{vCoins}</span>
-            <span>{vCard}</span>
+        <div className="flex">
+            <div className="mr-2 rtl:ml-2">
+                <Tag
+                    prefix={
+                        <HiFire className="text-base text-grey-500 mr-1 rtl:ml-1" />
+                    }
+                >
+                    {vCard} credits
+                </Tag>
+            </div>
+            <div className="mr-2 rtl:ml-2">
+                <Tag
+                    prefix={
+                        <HiOutlineTag className="text-base text-grey-500 mr-1 rtl:ml-1" />
+                    }
+                >
+                    {vCoins} coins
+                </Tag>
+            </div>
         </div>
     )
 }
