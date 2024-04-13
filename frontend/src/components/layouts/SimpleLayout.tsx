@@ -1,10 +1,12 @@
 import Header from '@/components/template/Header'
-import SidePanel from '@/components/template/SidePanel'
 import UserDropdown from '@/components/template/UserDropdown'
+import Search from '@/components/template/Search'
+import Notification from '@/components/template/Notification'
 import HeaderLogo from '@/components/template/HeaderLogo'
 import MobileNav from '@/components/template/MobileNav'
 import HorizontalNav from '@/components/template/HorizontalNav'
 import View from '@/views'
+import Credits from '@/components/template/Credits'
 
 const HeaderActionsStart = () => {
     return (
@@ -18,7 +20,9 @@ const HeaderActionsStart = () => {
 const HeaderActionsEnd = () => {
     return (
         <>
-            <SidePanel />
+            <Credits />
+            <Search />
+            <Notification />
             <UserDropdown hoverable={false} />
         </>
     )
