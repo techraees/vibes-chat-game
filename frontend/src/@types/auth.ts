@@ -10,6 +10,9 @@ export type SignInResponse = {
         authority: string[]
         avatar: string
         email: string
+        vCoins: number
+        vCard: number
+        married: number
     }
 }
 

@@ -82,7 +82,7 @@ const SignUpForm = (props: SignUpFormProps) => {
                     <Form>
                         <FormContainer>
                             <FormItem
-                                label="username"
+                                label="Username"
                                 invalid={errors.username && touched.username}
                                 errorMessage={errors.username}
                             >
@@ -90,7 +90,7 @@ const SignUpForm = (props: SignUpFormProps) => {
                                     type="text"
                                     autoComplete="off"
                                     name="username"
-                                    placeholder="username"
+                                    placeholder="Username"
                                     component={Input}
                                 />
                             </FormItem>

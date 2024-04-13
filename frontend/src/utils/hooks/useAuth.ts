@@ -45,6 +45,9 @@ function useAuth() {
                                 username: 'Anonymous',
                                 authority: ['USER'],
                                 email: '',
+                                vCoins: 0,
+                                vCard: 0,
+                                married: 0,
                             },
                         ),
                     )
@@ -84,6 +87,9 @@ function useAuth() {
                                 username: 'Anonymous',
                                 authority: ['USER'],
                                 email: '',
+                                vCoins: 0,
+                                vCard: 0,
+                                married: 0,
                             },
                         ),
                     )

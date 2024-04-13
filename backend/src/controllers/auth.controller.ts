@@ -68,9 +68,18 @@ export const signin = async (req: express.Request, res: express.Response) => {
             user?.password || ""
         );
 
-        if (!isPasswordCorrect) {
+        if (!user || !isPasswordCorrect) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
+
+        const token = generateAndSendToken(user?._id);
+
+        console.log(user, token);
+
+        return res.status(200).json({
+            user: user,
+            token: token,
+        });
     } catch (error) {
         console.log(`Error in signin controller: ${error}`);
         return res.status(500).json({ message: "Something went wrong" });
