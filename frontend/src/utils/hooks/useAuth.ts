@@ -73,8 +73,7 @@ function useAuth() {
         try {
             const resp = await apiSignUp(values)
             if (resp.data) {
-                const { token } = resp.data
-                dispatch(signInSuccess(token))
+                dispatch(signInSuccess())
                 if (resp.data.user) {
                     dispatch(
                         setUser(

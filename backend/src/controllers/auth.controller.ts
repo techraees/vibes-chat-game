@@ -1,6 +1,6 @@
 import express from "express";
 import User from "../models/user.model";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import generateAndSendToken from "../utils/generateToken";
 
 export const signup = async (req: express.Request, res: express.Response) => {
