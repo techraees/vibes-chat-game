@@ -9,6 +9,9 @@ export type SignInResponse = {
         authority: string[]
         avatar: string
         email: string
+        vCoins: number
+        vCard: number
+        married: number
     }
 }
 
@@ -18,6 +21,11 @@ export type SignUpCredential = {
     username: string
     email: string
     password: string
+}
+
+export type SignOut = {
+    token: string
+    username: string
 }
 
 export type ForgotPassword = {

@@ -21,7 +21,7 @@ function useAuth() {
 
     const query = useQuery()
 
-    const { token, signedIn } = useAppSelector((state) => state.auth.session)
+    const { signedIn } = useAppSelector((state) => state.auth.session)
 
     const signIn = async (
         values: SignInCredential,
@@ -45,6 +45,9 @@ function useAuth() {
                                 username: 'Anonymous',
                                 authority: ['USER'],
                                 email: '',
+                                vCoins: 0,
+                                vCard: 0,
+                                married: 0,
                             },
                         ),
                     )
@@ -82,6 +85,9 @@ function useAuth() {
                                 username: 'Anonymous',
                                 authority: ['USER'],
                                 email: '',
+                                vCoins: 0,
+                                vCard: 0,
+                                married: 0,
                             },
                         ),
                     )
@@ -114,8 +120,12 @@ function useAuth() {
                 username: '',
                 email: '',
                 authority: [],
+                vCoins: 0,
+                vCard: 0,
+                married: 0,
             }),
         )
+
         navigate(appConfig.unAuthenticatedEntryPath)
     }
 
@@ -125,7 +135,7 @@ function useAuth() {
     }
 
     return {
-        authenticated: token && signedIn,
+        authenticated: signedIn,
         signIn,
         signUp,
         signOut,

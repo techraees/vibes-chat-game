@@ -5,11 +5,9 @@ import {
     PAGE_CONTAINER_GUTTER_X,
     PAGE_CONTAINER_GUTTER_Y,
 } from '@/constants/theme.constant'
-import Footer from '@/components/template/Footer'
 import type { CommonProps } from '@/@types/common'
 import type { Meta } from '@/@types/routes'
 import type { ElementType, ComponentPropsWithRef } from 'react'
-import type { FooterPageContainerType } from '@/components/template/Footer'
 
 export interface PageContainerProps extends CommonProps, Meta {
     contained?: boolean
@@ -43,14 +41,15 @@ const PageContainer = (props: PageContainerProps) => {
                         'page-container relative h-full flex flex-auto flex-col',
                         pageContainerType !== 'gutterless' &&
                             `${PAGE_CONTAINER_GUTTER_X} ${PAGE_CONTAINER_GUTTER_Y}`,
-                        pageContainerType === 'contained' && 'container mx-auto'
+                        pageContainerType === 'contained' &&
+                            'container mx-auto',
                     )}
                 >
                     {(header || extraHeader) && (
                         <div
                             className={classNames(
                                 contained && 'container mx-auto',
-                                'flex items-center justify-between mb-4'
+                                'flex items-center justify-between mb-4',
                             )}
                         >
                             <div>
@@ -80,13 +79,6 @@ const PageContainer = (props: PageContainerProps) => {
                     )}
                 </div>
             </main>
-            {footer && (
-                <Footer
-                    pageContainerType={
-                        pageContainerType as FooterPageContainerType
-                    }
-                />
-            )}
         </div>
     )
 }

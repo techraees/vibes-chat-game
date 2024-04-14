@@ -41,11 +41,12 @@ export const signup = async (req: express.Request, res: express.Response) => {
 
         // Generate and send token
         if (newUser) {
-            generateAndSendToken(newUser._id, res);
-            // await newUser.save();
+            const token = generateAndSendToken(newUser._id);
+            await newUser.save();
 
             return res.status(201).json({
                 user: newUser,
+                token: token,
             });
         } else {
             return res.status(500).json({ message: "Something went wrong" });
@@ -58,8 +59,42 @@ export const signup = async (req: express.Request, res: express.Response) => {
 
 export const signin = async (req: express.Request, res: express.Response) => {
     try {
+        const { username, password } = req.body;
+
+        // Check if the user exists
+        const user = await User.findOne({ username });
+
+        // Check if the password is correct
+        const isPasswordCorrect = await bcrypt.compare(
+            password,
+            user?.password || ""
+        );
+
+        // If the user does not exist or the password is incorrect
+        if (!user || !isPasswordCorrect) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+
+        // Generate token
+        const token = generateAndSendToken(user?._id);
+
+        // Send the user and token
+        return res.status(200).json({
+            user: user,
+            token: token,
+        });
     } catch (error) {
         console.log(`Error in signin controller: ${error}`);
+        return res.status(500).json({ message: "Something went wrong" });
+    }
+};
+
+export const signout = async (req: express.Request, res: express.Response) => {
+    try {
+        // Send a response to sign out
+        return res.status(200).json({ message: "Signed out" });
+    } catch (error) {
+        console.log(`Error in signout controller: ${error}`);
         return res.status(500).json({ message: "Something went wrong" });
     }
 };
