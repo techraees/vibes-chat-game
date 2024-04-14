@@ -24,7 +24,6 @@ export type SignUpCredential = {
 }
 
 export type SignOut = {
-    token: string
     username: string
 }
 
