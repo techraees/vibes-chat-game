@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react'
+import { NAV_ITEM_HEIGHT } from '@/constants/theme.constant'
 
 interface CanvasProps {
     width: number
@@ -25,7 +26,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
 
 Canvas.defaultProps = {
     width: window.innerWidth,
-    height: window.innerHeight,
+    height: window.innerHeight - NAV_ITEM_HEIGHT,
 }
 
 export default Canvas
