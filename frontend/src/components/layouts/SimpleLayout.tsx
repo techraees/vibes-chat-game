@@ -7,6 +7,7 @@ import MobileNav from '@/components/template/MobileNav'
 import HorizontalNav from '@/components/template/HorizontalNav'
 import View from '@/views'
 import Credits from '@/components/template/Credits'
+import { useLocation } from 'react-router-dom'
 
 const HeaderActionsStart = () => {
     return (
@@ -29,6 +30,9 @@ const HeaderActionsEnd = () => {
 }
 
 const SimpleLayout = () => {
+    const location = useLocation()
+    const path = location.pathname
+
     return (
         <div className="app-layout-simple flex flex-auto flex-col min-h-screen">
             <div className="flex flex-auto min-w-0">
@@ -40,7 +44,12 @@ const SimpleLayout = () => {
                         headerMiddle={<HorizontalNav />}
                         headerEnd={<HeaderActionsEnd />}
                     />
-                    <View pageContainerType="contained" />
+
+                    {path !== '/chat' ? (
+                        <View pageContainerType="contained" />
+                    ) : (
+                        <View />
+                    )}
                 </div>
             </div>
         </div>

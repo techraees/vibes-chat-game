@@ -8,6 +8,7 @@ import {
 import type { CommonProps } from '@/@types/common'
 import type { Meta } from '@/@types/routes'
 import type { ElementType, ComponentPropsWithRef } from 'react'
+import { useLocation } from 'react-router-dom'
 
 export interface PageContainerProps extends CommonProps, Meta {
     contained?: boolean
@@ -33,6 +34,9 @@ const PageContainer = (props: PageContainerProps) => {
         footer = true,
     } = props
 
+    const location = useLocation()
+    const path = location.pathname
+
     return (
         <div className="h-full flex flex-auto flex-col justify-between">
             <main className="h-full">
@@ -40,6 +44,7 @@ const PageContainer = (props: PageContainerProps) => {
                     className={classNames(
                         'page-container relative h-full flex flex-auto flex-col',
                         pageContainerType !== 'gutterless' &&
+                            path !== '/chat' &&
                             `${PAGE_CONTAINER_GUTTER_X} ${PAGE_CONTAINER_GUTTER_Y}`,
                         pageContainerType === 'contained' &&
                             'container mx-auto',
