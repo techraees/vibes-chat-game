@@ -15,7 +15,7 @@ class Player {
     private dy: number = 0
     private mouseX: number = 0
     private mouseY: number = 0
-    private stepWidthFactor: number = 200
+    private speed: number = 2
 
     // Constructor
     public constructor(
@@ -43,7 +43,7 @@ class Player {
 
         // Draw a player
         if (context) {
-            context.fillStyle = '#F00000'
+            context.fillStyle = 'grey'
             context.beginPath()
             context.arc(this.position.x, this.position.y, 10, 0, 2 * Math.PI)
             context.fill()
@@ -55,10 +55,20 @@ class Player {
         this.mouseX = x
         this.mouseY = y
 
-        console.log(this.mouseX, this.mouseY)
+        // Calculate the direction vector
+        const dx = this.mouseX - this.position.x
+        const dy = this.mouseY - this.position.y
 
-        this.dx = ((this.position.x - this.mouseX) / this.stepWidthFactor) * -1
-        this.dy = ((this.position.y - this.mouseY) / this.stepWidthFactor) * -1
+        // Calculate the distance
+        const distance = Math.sqrt(dx * dx + dy * dy)
+
+        // Normalize the direction vector
+        const normDx = dx / distance
+        const normDy = dy / distance
+
+        // Set the movement vector
+        this.dx = normDx * this.speed
+        this.dy = normDy * this.speed
     }
 
     // Update player

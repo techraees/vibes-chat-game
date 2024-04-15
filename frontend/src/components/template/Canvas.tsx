@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react'
 import { NAV_ITEM_HEIGHT } from '@/constants/theme.constant'
 import InputGroup from '@/components/ui/InputGroup'
-import { HiOutlineMicrophone } from 'react-icons/hi'
+import { HiChat } from 'react-icons/hi'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import Player from '@/utils/game/player/player'
@@ -74,7 +74,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
                 <InputGroup className="absolute bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2">
                     <Input
                         prefix={
-                            <HiOutlineMicrophone className="text-xl text-indigo-600 cursor-pointer" />
+                            <HiChat className="text-xl text-indigo-600 cursor-pointer" />
                         }
                     />
                     <Button>Send</Button>
