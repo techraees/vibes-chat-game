@@ -55,6 +55,8 @@ class Player {
         this.mouseX = x
         this.mouseY = y
 
+        console.log(this.mouseX, this.mouseY)
+
         this.dx = ((this.position.x - this.mouseX) / this.stepWidthFactor) * -1
         this.dy = ((this.position.y - this.mouseY) / this.stepWidthFactor) * -1
     }
