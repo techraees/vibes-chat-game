@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react'
 import { NAV_ITEM_HEIGHT } from '@/constants/theme.constant'
+import Player from '@/utils/game/player/player'
 
 // Canvas props
 interface CanvasProps {
@@ -13,7 +14,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
 
     useEffect(() => {
-        // Draw a blue rectangle on the canvas
+        // Initialize canvas
         if (canvasRef.current) {
             const canvas = canvasRef.current
             const context = canvas.getContext('2d')
@@ -24,16 +25,49 @@ const Canvas = ({ width, height }: CanvasProps) => {
                 e.stopPropagation()
             }
 
-            // Draw a blue rectangle
+            // Initialize canvas
             if (context) {
-                context.fillStyle = 'blue'
-                context.fillRect(0, 0, canvas.width, canvas.height)
+                // Create player
+                const player = new Player(
+                    'dane',
+                    'male',
+                    { x: 859, y: 859 },
+                    canvas,
+                )
+
+                // Mouse down event
+                canvas.addEventListener('mousedown', (e) => {
+                    if (e.button === 0) {
+                        const position = getMousePosition(canvas, e)
+
+                        // Move player
+                        player.movePlayer(position.x, position.y)
+                    }
+                })
+
+                player.update()
             }
         }
     }, [])
 
     // Return canvas
-    return <canvas ref={canvasRef} height={height} width={width} />
+    return (
+        <canvas
+            className="position: absolute"
+            ref={canvasRef}
+            height={height}
+            width={width}
+        ></canvas>
+    )
+}
+
+// Get mouse position
+const getMousePosition = (canvas: HTMLCanvasElement, e: MouseEvent) => {
+    const rect = canvas.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+
+    return { x, y }
 }
 
 // Default props
