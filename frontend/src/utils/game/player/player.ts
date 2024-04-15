@@ -52,6 +52,7 @@ class Player {
 
     // Move player
     movePlayer = (x: number, y: number) => {
+        // Set the mouse position
         this.mouseX = x
         this.mouseY = y
 
@@ -73,21 +74,26 @@ class Player {
 
     // Update player
     update = () => {
+        // Get the context
         const context = this.canvas.getContext('2d')
 
+        // Clear the canvas
         if (context) {
             context.clearRect(0, 0, this.canvas.width, this.canvas.height)
             this.draw()
 
+            // Check if the player should move
             var shouldMove =
                 Math.abs(this.position.x - this.mouseX) > 1 ||
                 Math.abs(this.position.y - this.mouseY) > 1
 
+            // Move the player
             if (shouldMove) {
                 this.position.x += this.dx
                 this.position.y += this.dy
             }
 
+            // Request the next frame
             window.requestAnimationFrame(this.update)
         }
     }
