@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import useAuth from '@/utils/hooks/useAuth'
 import { apiVerify } from '@/services/UserVerificationService'
 import { useAppSelector } from '@/store'
@@ -11,6 +11,10 @@ interface SocketContextValue {
 const SocketContext = createContext<SocketContextValue>({
     socket: null,
 })
+
+export const useSocketContext = () => {
+    return useContext(SocketContext)
+}
 
 export const SocketContextProvider = ({
     children,

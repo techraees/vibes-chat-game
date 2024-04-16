@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes";
 import verifyRoutes from "./routes/verify.routes";
 import connectToDatabase from "./database/connect";
-import { app, server } from "./socket/socket";
+import { app, server, Game } from "./game/server";
 
 dotenv.config();
 
@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 
 // Configure CORS
 const corsOptions = {
-    origin: "http://localhost:5173", // Specify the exact origin
+    origin: "http://localhost:5173",
     credentials: true,
     optionsSuccessStatus: 200,
 };
@@ -28,4 +28,6 @@ app.use("/api/", verifyRoutes);
 server.listen(PORT, () => {
     connectToDatabase();
     console.log(`Server is running on port ${PORT}`);
+
+    const game = new Game();
 });
