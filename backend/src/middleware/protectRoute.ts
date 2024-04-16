@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import express from "express";
-import User from "../models/user.model.js";
+import User from "../models/user.model";
 
 declare global {
     namespace Express {
@@ -42,7 +42,7 @@ const protectRoute = async (
         req.user = user;
 
         next();
-    } catch (error) {
+    } catch (error: any) {
         console.log(`Error in protectRoute middleware: ${error.message}`);
         res.status(500).json({ error: "Unauthorized" });
     }
