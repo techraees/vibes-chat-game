@@ -4,7 +4,6 @@ import InputGroup from '@/components/ui/InputGroup'
 import { HiChat } from 'react-icons/hi'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
-import Player from '@/utils/game/player/player'
 
 // Canvas props
 interface CanvasProps {
@@ -31,26 +30,6 @@ const Canvas = ({ width, height }: CanvasProps) => {
 
             // Initialize canvas
             if (context) {
-                // Create player
-                const player = new Player(
-                    'dane',
-                    'male',
-                    { x: 912, y: 760 },
-                    canvas,
-                )
-
-                // Mouse down event
-                canvas.addEventListener('mousedown', (e) => {
-                    if (e.button === 0) {
-                        const position = getMousePosition(canvas, e)
-
-                        // Move player
-                        player.movePlayer(position.x, position.y)
-                    }
-                })
-
-                // Update player
-                player.update()
             }
 
             // Resize canvas

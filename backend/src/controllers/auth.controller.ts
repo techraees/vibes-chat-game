@@ -44,13 +44,13 @@ export const signup = async (req: express.Request, res: express.Response) => {
             const token = generateAndSendToken(newUser._id);
             await newUser.save();
 
-            res.cookie('authToken', token, {
+            res.cookie("authToken", token, {
                 httpOnly: true,
-                maxAge: 24 * 60 * 60 * 1000 // Cookie expires in 1 day
+                maxAge: 24 * 60 * 60 * 1000, // Cookie expires in 1 day
             });
-    
+
             return res.status(201).json({
-                user: newUser
+                user: newUser,
             });
         } else {
             return res.status(500).json({ message: "Something went wrong" });
@@ -82,14 +82,14 @@ export const signin = async (req: express.Request, res: express.Response) => {
         // Generate token
         const token = generateAndSendToken(user?._id);
 
-        res.cookie('authToken', token, {
+        res.cookie("authToken", token, {
             httpOnly: true,
-            maxAge: 24 * 60 * 60 * 1000 // Cookie expires in 1 day
+            maxAge: 24 * 60 * 60 * 1000, // Cookie expires in 1 day
         });
 
         // Send the user and token
         return res.status(200).json({
-            user
+            user,
         });
     } catch (error) {
         console.log(`Error in signin controller: ${error}`);
@@ -99,10 +99,9 @@ export const signin = async (req: express.Request, res: express.Response) => {
 
 export const signout = async (req: express.Request, res: express.Response) => {
     try {
-        
-        res.cookie('authToken', '', {
+        res.cookie("authToken", "", {
             httpOnly: true,
-            expires: new Date(0)
+            expires: new Date(0),
         });
 
         // Send a response to sign out

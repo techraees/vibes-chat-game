@@ -2,13 +2,16 @@ import jwt from "jsonwebtoken";
 import express from "express";
 import User from "../models/user.model.js";
 
-interface CustomRequest extends Request {
-    cookies: any;
-    user?: any;
+declare global {
+    namespace Express {
+        interface Request {
+            user?: any;
+        }
+    }
 }
 
 const protectRoute = async (
-    req: CustomRequest,
+    req: express.Request,
     res: express.Response,
     next: express.NextFunction
 ): Promise<void> => {
