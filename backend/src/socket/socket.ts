@@ -12,7 +12,9 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-    console.log("A user connected", socket.id);
+    const userId = socket.handshake.query.userId;
+
+    console.log(`User: ${userId} connected with socket id: ${socket.id}`);
 
     socket.on("disconnect", () => {
         console.log("A user disconnected", socket.id);

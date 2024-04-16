@@ -21,6 +21,7 @@ export const SocketContextProvider = ({
     const { authenticated } = useAuth()
 
     const username = useAppSelector((state) => state.auth.user.username ?? '')
+    const id = useAppSelector((state) => state.auth.user._id)
 
     useEffect(() => {
         if (authenticated) {
@@ -30,7 +31,12 @@ export const SocketContextProvider = ({
                 })
 
                 if (result) {
-                    const socket = io('http://localhost:5000')
+                    const socket = io('http://localhost:5000', {
+                        query: {
+                            userId: id,
+                        },
+                    })
+
                     setSocket(socket)
 
                     return () => {

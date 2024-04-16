@@ -40,6 +40,7 @@ function useAuth() {
                     dispatch(
                         setUser(
                             resp.data.user || {
+                                _id: 0,
                                 avatar: '',
                                 username: 'Anonymous',
                                 authority: ['USER'],
@@ -80,6 +81,7 @@ function useAuth() {
                     dispatch(
                         setUser(
                             resp.data.user || {
+                                _id: 0,
                                 avatar: '',
                                 username: 'Anonymous',
                                 authority: ['USER'],
@@ -115,6 +117,7 @@ function useAuth() {
         dispatch(signOutSuccess())
         dispatch(
             setUser({
+                _id: 0,
                 avatar: '',
                 username: '',
                 email: '',
