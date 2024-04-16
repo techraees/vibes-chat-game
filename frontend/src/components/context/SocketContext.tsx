@@ -1,5 +1,7 @@
 import { createContext, useEffect, useState } from 'react'
 import useAuth from '@/utils/hooks/useAuth'
+import { apiVerify } from '@/services/UserVerificationService'
+import { useAppSelector } from '@/store'
 import io, { Socket } from 'socket.io-client'
 
 interface SocketContextValue {
@@ -18,14 +20,24 @@ export const SocketContextProvider = ({
     const [socket, setSocket] = useState<Socket | null>(null)
     const { authenticated } = useAuth()
 
+    const username = useAppSelector((state) => state.auth.user.username ?? '')
+
     useEffect(() => {
         if (authenticated) {
-            const socket = io('http://localhost:5000')
-            setSocket(socket)
+            ;(async () => {
+                const result = await apiVerify({
+                    username,
+                })
 
-            return () => {
-                socket.close()
-            }
+                if (result) {
+                    const socket = io('http://localhost:5000')
+                    setSocket(socket)
+
+                    return () => {
+                        socket.close()
+                    }
+                }
+            })()
         } else {
             if (socket) {
                 socket.close()

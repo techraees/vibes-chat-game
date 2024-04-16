@@ -16,7 +16,7 @@ const protectRoute = async (
     next: express.NextFunction
 ): Promise<void> => {
     try {
-        const token: string = req.cookies.token;
+        const token: string = req.cookies.authToken;
 
         if (!token) {
             res.status(401).json({ error: "Unauthorized - No Token Provided" });
