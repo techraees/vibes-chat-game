@@ -70,10 +70,17 @@ class Game {
                     this.players.push(player);
                 }
 
+                console.log(`[Game] ${this.players.length} players connected`);
+
                 socket.on("requestRooms", () => {
                     socket.emit(
                         "chatRooms",
-                        this.chatRooms.map((room) => room.getRoomName())
+                        this.chatRooms.map((room) => ({
+                            name: room.getRoomName(),
+                            capacity: room.getRoomCapacity(),
+                            remaining: room.getCapacityRemaining(),
+                            isFull: room.isRoomFull(),
+                        }))
                     );
                 });
             }
