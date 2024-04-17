@@ -32,12 +32,7 @@ const Canvas = ({ width, height }: CanvasProps) => {
 
             // Initialize canvas
             if (context) {
-                socket?.emit('requestRooms')
             }
-
-            socket?.on('chatRooms', (rooms: string[]) => {
-                console.log(rooms)
-            })
 
             // Resize canvas
             window.addEventListener('resize', () => {

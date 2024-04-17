@@ -1,0 +1,74 @@
+[
+    {
+        "id": 1,
+        "name": "Cafe",
+        "description": "Example description for a cafe. A cozy place where conversations flow as freely as the coffee.",
+        "capacity": 20,
+        "status": true,
+        "layout": {}
+    },
+    {
+        "id": 2,
+        "name": "Park",
+        "description": "Example description for a park. A place where people come to relax and enjoy the outdoors.",
+        "capacity": 20,
+        "status": false,
+        "layout": {}
+    },
+    {
+        "id": 3,
+        "name": "Bus Stop",
+        "description": "Example description for a bus stop. A place where people come and go, waiting for their ride to arrive.",
+        "capacity": 20,
+        "status": true,
+        "layout": {}
+    },
+    {
+        "id": 4,
+        "name": "Campus",
+        "description": "Example description for a campus. A place where students come to learn and grow.",
+        "capacity": 20,
+        "status": true,
+        "layout": {}
+    },
+    {
+        "id": 5,
+        "name": "Stage",
+        "description": "Example description for a stage. A place where performers come to showcase their talents.",
+        "capacity": 20,
+        "status": true,
+        "layout": {}
+    },
+    {
+        "id": 6,
+        "name": "Beach",
+        "description": "Example description for a beach. A place where people come to relax and enjoy the sun and sand.",
+        "capacity": 20,
+        "status": true,
+        "layout": {}
+    },
+    {
+        "id": 7,
+        "name": "Mall",
+        "description": "Example description for a mall. A place where people come to shop and socialize.",
+        "capacity": 20,
+        "status": true,
+        "layout": {}
+    },
+    {
+        "id": 8,
+        "name": "Hall",
+        "description": "Example description for a hall. A place where events and gatherings are held.",
+        "capacity": 20,
+        "status": true,
+        "layout": {}
+    },
+    {
+        "id": 9,
+        "name": "Graveyard",
+        "description": "Example description for a graveyard. A place where people come to pay their respects to the deceased.",
+        "capacity": 20,
+        "status": true,
+        "layout": {}
+    }
+]

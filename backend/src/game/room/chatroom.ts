@@ -5,21 +5,46 @@ import Player from "../player/player";
 /* ChatRoom class */
 class ChatRoom {
     /* Properties */
+    private id: number;
     private name: string;
+    private description: string;
     private paticipants: Player[] = [];
     private capacity: number;
+    private status: boolean;
+    private layout: string;
 
     /* Constructor */
-    constructor(name: string, capacity: number) {
+    constructor(
+        id: number,
+        name: string,
+        description: string,
+        capacity: number,
+        status: boolean,
+        layout: string
+    ) {
+        this.id = id;
         this.name = name;
+        this.description = description;
         this.capacity = capacity;
+        this.status = status;
+        this.layout = layout;
     }
 
     /* Methods */
 
+    // Get the room id
+    public getRoomId = (): number => {
+        return this.id;
+    };
+
     // Get the room name
     public getRoomName = (): string => {
         return this.name;
+    };
+
+    // Get the room description
+    public getRoomDescription = (): string => {
+        return this.description;
     };
 
     // Get the room capacity
@@ -40,6 +65,16 @@ class ChatRoom {
     // Check if the room is full
     public isRoomFull = (): boolean => {
         return this.paticipants.length === this.capacity;
+    };
+
+    // Get the room status
+    public getRoomStatus = (): boolean => {
+        return this.status;
+    };
+
+    // Get the room layout
+    public getRoomLayout = (): string => {
+        return this.layout;
     };
 
     // Add a participant to the room

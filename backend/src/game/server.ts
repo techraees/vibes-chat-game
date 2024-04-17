@@ -5,6 +5,7 @@ import express from "express";
 import ChatRoom from "./room/chatroom";
 import Player from "./player/player";
 import User from "../models/user.model";
+import rooms from "./room/rooms.json";
 
 /* Server */
 const app = express();
@@ -32,28 +33,26 @@ class Game {
 
     /* Methods */
     private initializeChatRooms = () => {
-        const rooms = [
-            { name: "Java Jolt", capacity: 20 },
-            { name: "Park", capacity: 20 },
-            { name: "Bus Stop", capacity: 20 },
-            { name: "Food Cafe", capacity: 20 },
-            { name: "Zsu", capacity: 20 },
-            { name: "Stage", capacity: 20 },
-            { name: "Beach", capacity: 20 },
-            { name: "Mall", capacity: 20 },
-            { name: "Lexi Hall", capacity: 20 },
-            { name: "Graveyard", capacity: 20 },
-        ];
+        const roomData = JSON.parse(JSON.stringify(rooms));
 
-        for (const room of rooms) {
-            this.chatRooms.push(new ChatRoom(room.name, room.capacity));
+        for (const room of roomData) {
+            this.chatRooms.push(
+                new ChatRoom(
+                    room.id,
+                    room.name,
+                    room.description,
+                    room.capacity,
+                    room.status,
+                    room.layout
+                )
+            );
         }
 
         console.log(`[Game] ${this.chatRooms.length} chat rooms initialized`);
     };
 
     private initializeSocketEvents = () => {
-        console.log(`[Game] Socket initialized`);
+        console.log(`[Game] Socket Events initialized`);
 
         io.on("connection", async (socket) => {
             const userId = socket.handshake.query.userId as string;
@@ -70,18 +69,19 @@ class Game {
                     this.players.push(player);
                 }
 
-                console.log(`[Game] ${this.players.length} players connected`);
-
                 socket.on("requestRooms", () => {
-                    socket.emit(
-                        "chatRooms",
-                        this.chatRooms.map((room) => ({
+                    const data = this.chatRooms.map((room) => {
+                        return {
+                            id: room.getRoomId(),
                             name: room.getRoomName(),
+                            description: room.getRoomDescription(),
                             capacity: room.getRoomCapacity(),
                             remaining: room.getCapacityRemaining(),
-                            isFull: room.isRoomFull(),
-                        }))
-                    );
+                            status: room.getRoomStatus(),
+                        };
+                    });
+
+                    socket.emit("chatRooms", JSON.stringify(data));
                 });
             }
         });
