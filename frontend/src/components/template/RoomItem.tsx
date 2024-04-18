@@ -4,8 +4,24 @@ import ProgressionBar from './ProgressionBar'
 import Button from '@/components/ui/Button'
 import { HiCheckCircle, HiMinusCircle } from 'react-icons/hi'
 
-const RoomItem = ({ data }: { data: any }) => {
+interface RoomItemProps {
+    data: {
+        id: number
+        name: string
+        description: string
+        capacity: number
+        remaining: number
+        status: boolean
+    }
+    setRoomSelected: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const RoomItem: React.FC<RoomItemProps> = ({ data, setRoomSelected }) => {
     const { name, description, capacity, remaining, status } = data
+
+    const handleJoinRoom = () => {
+        setRoomSelected(true)
+    }
 
     return (
         <Card bodyClass="h-full">
@@ -32,7 +48,7 @@ const RoomItem = ({ data }: { data: any }) => {
                     />
                 </div>
                 <div className="mt-3">
-                    <Button size="sm" block>
+                    <Button size="sm" block onClick={handleJoinRoom}>
                         Join {name}
                     </Button>
                 </div>

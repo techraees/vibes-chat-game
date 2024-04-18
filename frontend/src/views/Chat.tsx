@@ -16,7 +16,7 @@ const Chat = () => {
             {roomSelected ? (
                 <Canvas width={userScreenX} height={userScreenY} />
             ) : (
-                <Rooms />
+                <Rooms setRoomSelected={setRoomSelected} />
             )}
         </div>
     )
