@@ -5,7 +5,8 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes";
 import verifyRoutes from "./routes/verify.routes";
 import connectToDatabase from "./database/connect";
-import { app, server, Game } from "./game/server";
+import { app, server, io } from "./game/server";
+import Game from "./game/game/game";
 
 dotenv.config();
 
@@ -29,5 +30,5 @@ server.listen(PORT, () => {
     connectToDatabase();
     console.log(`Server is running on port ${PORT}`);
 
-    const game = new Game();
+    const game = new Game(io);
 });

@@ -1,28 +1,26 @@
 /* Import */
 import { Socket } from "socket.io";
-import ChatRoom from "../room/chatroom";
 
 /* Player class */
 class Player {
-    private socket: Socket;
-    private username: string;
     public id: string;
-    private currentRoom: ChatRoom | null = null;
+    public username: string;
+    public currentRoom: string;
+    public socket: Socket;
 
-    constructor(socket: Socket, username: string, id: string) {
-        this.socket = socket;
-        this.username = username;
+    constructor(
+        id: string,
+        username: string,
+        currentRoom: string,
+        socket: Socket
+    ) {
         this.id = id;
-
-        this.initializeSocketEvents();
+        this.username = username;
+        this.currentRoom = currentRoom;
+        this.socket = socket;
     }
 
-    private initializeSocketEvents() {}
-
     /* Methods */
-    public updateSocket = (socket: Socket) => {
-        this.socket = socket;
-    };
 }
 
 /* Export */

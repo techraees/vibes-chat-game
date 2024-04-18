@@ -5,7 +5,7 @@
         "description": "Example description for a cafe. A cozy place where conversations flow as freely as the coffee.",
         "capacity": 20,
         "status": true,
-        "layout": {}
+        "layout": ""
     },
     {
         "id": 2,
@@ -13,7 +13,7 @@
         "description": "Example description for a park. A place where people come to relax and enjoy the outdoors.",
         "capacity": 20,
         "status": false,
-        "layout": {}
+        "layout": ""
     },
     {
         "id": 3,
@@ -21,7 +21,7 @@
         "description": "Example description for a bus stop. A place where people come and go, waiting for their ride to arrive.",
         "capacity": 20,
         "status": true,
-        "layout": {}
+        "layout": ""
     },
     {
         "id": 4,
@@ -29,7 +29,7 @@
         "description": "Example description for a campus. A place where students come to learn and grow.",
         "capacity": 20,
         "status": true,
-        "layout": {}
+        "layout": ""
     },
     {
         "id": 5,
@@ -37,7 +37,7 @@
         "description": "Example description for a stage. A place where performers come to showcase their talents.",
         "capacity": 20,
         "status": true,
-        "layout": {}
+        "layout": ""
     },
     {
         "id": 6,
@@ -45,7 +45,7 @@
         "description": "Example description for a beach. A place where people come to relax and enjoy the sun and sand.",
         "capacity": 20,
         "status": true,
-        "layout": {}
+        "layout": ""
     },
     {
         "id": 7,
@@ -53,7 +53,7 @@
         "description": "Example description for a mall. A place where people come to shop and socialize.",
         "capacity": 20,
         "status": true,
-        "layout": {}
+        "layout": ""
     },
     {
         "id": 8,
@@ -61,7 +61,7 @@
         "description": "Example description for a hall. A place where events and gatherings are held.",
         "capacity": 20,
         "status": true,
-        "layout": {}
+        "layout": ""
     },
     {
         "id": 9,
@@ -69,6 +69,6 @@
         "description": "Example description for a graveyard. A place where people come to pay their respects to the deceased.",
         "capacity": 20,
         "status": true,
-        "layout": {}
+        "layout": ""
     }
 ]

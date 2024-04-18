@@ -4,7 +4,6 @@ import InputGroup from '@/components/ui/InputGroup'
 import { HiChat } from 'react-icons/hi'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
-import { useSocketContext } from '../context/SocketContext'
 
 // Canvas props
 interface CanvasProps {
@@ -16,7 +15,6 @@ interface CanvasProps {
 const Canvas = ({ width, height }: CanvasProps) => {
     // Canvas reference
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
-    const { socket } = useSocketContext()
 
     useEffect(() => {
         // Initialize canvas
