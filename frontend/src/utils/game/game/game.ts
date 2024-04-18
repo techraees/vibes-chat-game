@@ -2,10 +2,11 @@ import { io, Socket } from 'socket.io-client'
 import ChatRoom from '../room/chatroom'
 
 class Game {
-    private socket: Socket | null = null
+    public socket: Socket | null = null
     private id: number
     private authenticated: boolean
     public chatRooms: ChatRoom[] = []
+    public currentRoom: ChatRoom | null = null
 
     constructor(authenticated: boolean, id: number) {
         this.id = id
@@ -18,11 +19,15 @@ class Game {
     private initializeSocketConnection = () => {
         if (!this.socket) {
             if (this.authenticated) {
-                this.socket = io('http://localhost:5000', {
-                    query: {
-                        userId: this.id,
-                    },
-                })
+                if (this.socket) {
+                    console.log('Socket already initialized')
+                } else {
+                    this.socket = io('http://localhost:5000', {
+                        query: {
+                            userId: this.id,
+                        },
+                    })
+                }
             } else {
                 if (this.socket) {
                     ;(this.socket as Socket).close()
@@ -39,6 +44,25 @@ class Game {
             this.socket.on('connect', this.connectedServer)
             this.socket.on('disconnect', this.disconnectedServer)
             this.socket.on('chatroomList', this.initializeChatrooms)
+            this.socket.on('joinRoom', this.joinRoom)
+        }
+    }
+
+    private joinRoom = (room: string) => {
+        if (room) {
+            const roomObject = JSON.parse(room)
+
+            this.currentRoom = new ChatRoom(
+                roomObject.id,
+                roomObject.name,
+                roomObject.description,
+                roomObject.participants,
+                roomObject.capacity,
+                roomObject.status,
+                roomObject.layout,
+            )
+
+            console.log(`[Game] Joined room ${this.currentRoom.name}`)
         }
     }
 
@@ -51,8 +75,8 @@ class Game {
                     room.id,
                     room.name,
                     room.description,
+                    room.participants,
                     room.capacity,
-                    room.remaining,
                     room.status,
                     room.layout,
                 )
@@ -60,7 +84,6 @@ class Game {
                 this.chatRooms.push(roomObject)
             })
 
-            console.log(this.chatRooms)
             console.log(`[Game] ${this.chatRooms.length} Rooms initialized`)
         }
     }

@@ -5,13 +5,13 @@ import { roomLayoutInterface } from "../interface/interface";
 /* ChatRoom class */
 class ChatRoom {
     /* Properties */
-    private id: number;
-    private name: string;
-    private description: string;
-    private paticipants: Player[] = [];
-    private capacity: number;
-    private status: boolean;
-    private layout: roomLayoutInterface;
+    public id: number;
+    public name: string;
+    public description: string;
+    public paticipants: Player[] = [];
+    public capacity: number;
+    public status: boolean;
+    public layout: roomLayoutInterface;
 
     /* Constructor */
     constructor(
@@ -38,11 +38,36 @@ class ChatRoom {
             id: this.id,
             name: this.name,
             description: this.description,
+            paticipants: this.getParticipantsForClient(),
             capacity: this.capacity,
-            remaining: this.capacity - this.paticipants.length,
             status: this.status,
             layout: this.layout,
         };
+    };
+
+    public getParticipantsForClient = () => {
+        if (this.paticipants.length === 0) {
+            return [];
+        } else {
+            this.paticipants.map((player) => {
+                return {
+                    id: player.getId(),
+                    name: player.getUsername(),
+                };
+            });
+        }
+    };
+
+    // Add player to room
+    public addPlayer = (player: Player) => {
+        this.paticipants.push(player);
+    };
+
+    // Remove player from room
+    public removePlayer = (player: Player) => {
+        this.paticipants = this.paticipants.filter(
+            (p) => p.getId() !== player.getId()
+        );
     };
 }
 

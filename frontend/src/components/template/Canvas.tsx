@@ -4,19 +4,29 @@ import InputGroup from '@/components/ui/InputGroup'
 import { HiChat } from 'react-icons/hi'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
+import { useGameContext } from '@/context/gameContext'
 
 // Canvas props
 interface CanvasProps {
+    room: number
     width: number
     height: number
 }
 
 // Canvas component for chat page
-const Canvas = ({ width, height }: CanvasProps) => {
+const Canvas = ({ room, width, height }: CanvasProps) => {
+    // Game context
+    const { game } = useGameContext()
+
     // Canvas reference
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
 
     useEffect(() => {
+        // Initialize join room
+        if (game?.socket && room) {
+            game.socket.emit('joinRoom', room)
+        }
+
         // Initialize canvas
         if (canvasRef.current) {
             const canvas = canvasRef.current
@@ -74,6 +84,7 @@ const getMousePosition = (canvas: HTMLCanvasElement, e: MouseEvent) => {
 
 // Default props
 Canvas.defaultProps = {
+    room: 0,
     width: window.innerWidth,
     height: window.innerHeight - NAV_ITEM_HEIGHT,
 }

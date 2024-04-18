@@ -1,11 +1,12 @@
 import { roomLayoutInterface } from '../interface/interface'
+import Player from '../player/player'
 
 class ChatRoom {
     public id: number
     public name: string
     public description: string
+    public participants: Player[]
     public capacity: number
-    public remaining: number
     public status: boolean
     public layout: roomLayoutInterface
 
@@ -13,16 +14,16 @@ class ChatRoom {
         id: number,
         name: string,
         description: string,
+        participants: Player[],
         capacity: number,
-        remaining: number,
         status: boolean,
         layout: roomLayoutInterface,
     ) {
         this.id = id
         this.name = name
         this.description = description
+        this.participants = participants
         this.capacity = capacity
-        this.remaining = remaining
         this.status = status
         this.layout = layout
     }

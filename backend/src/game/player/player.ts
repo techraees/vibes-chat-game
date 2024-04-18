@@ -21,6 +21,21 @@ class Player {
     }
 
     /* Methods */
+    public getId = () => {
+        return this.id;
+    };
+
+    public getUsername = () => {
+        return this.username;
+    };
+
+    public getCurrentRoom = () => {
+        return this.currentRoom;
+    };
+
+    public getSocket = () => {
+        return this.socket;
+    };
 }
 
 /* Export */

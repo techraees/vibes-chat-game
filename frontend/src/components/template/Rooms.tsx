@@ -4,10 +4,10 @@ import { useGameContext } from '@/context/gameContext'
 import RoomItem from './RoomItem'
 
 interface RoomsProps {
-    setRoomSelected: React.Dispatch<React.SetStateAction<boolean>>
+    setSelectedRoomId: React.Dispatch<React.SetStateAction<number | null>>
 }
 
-const Rooms: React.FC<RoomsProps> = ({ setRoomSelected }) => {
+const Rooms: React.FC<RoomsProps> = ({ setSelectedRoomId }) => {
     const { game } = useGameContext()
 
     return (
@@ -19,7 +19,7 @@ const Rooms: React.FC<RoomsProps> = ({ setRoomSelected }) => {
                         <RoomItem
                             key={room.id}
                             data={room}
-                            setRoomSelected={setRoomSelected}
+                            setSelectedRoomId={setSelectedRoomId}
                         />
                     ))}
                 </div>
