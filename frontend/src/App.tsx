@@ -5,7 +5,7 @@ import store, { persistor } from './store'
 import Theme from '@/components/template/Theme'
 import Layout from '@/components/layouts'
 import './locales'
-
+import { GameContextProvider } from './context/gameContext'
 const environment = process.env.NODE_ENV
 
 function App() {
@@ -13,9 +13,11 @@ function App() {
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
                 <BrowserRouter>
-                    <Theme>
-                        <Layout />
-                    </Theme>
+                    <GameContextProvider>
+                        <Theme>
+                            <Layout />
+                        </Theme>
+                    </GameContextProvider>
                 </BrowserRouter>
             </PersistGate>
         </Provider>

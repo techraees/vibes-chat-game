@@ -2,6 +2,7 @@ import { Server, Socket } from "socket.io";
 import ChatRoom from "../room/chatroom";
 import Player from "../player/player";
 import User from "../../models/user.model";
+import Rooms from "../room/rooms.json";
 
 class Game {
     private chatRooms: ChatRoom[] = [];
@@ -10,8 +11,27 @@ class Game {
 
     constructor(io: Server) {
         this.io = io;
+        this.initializeRooms();
         this.initializeSocketConnection();
     }
+
+    // InitializeRooms
+    private initializeRooms = () => {
+        Rooms.forEach((room) => {
+            const chatRoom = new ChatRoom(
+                room.id,
+                room.name,
+                room.description,
+                room.capacity,
+                room.status,
+                room.layout
+            );
+
+            this.chatRooms.push(chatRoom);
+        });
+
+        console.log(`[Game] ${this.chatRooms.length} Rooms initialized`);
+    };
 
     // Initialize socket connection
     private initializeSocketConnection = () => {
@@ -22,6 +42,9 @@ class Game {
 
                 // Listen for events
                 socket.on("disconnect", () => this.disconnectPlayer(socket));
+                socket.on("requestChatroomList", () =>
+                    this.sendChatroomList(socket)
+                );
             });
         }
     };
@@ -63,6 +86,16 @@ class Game {
         console.log(
             `[Game] Player disconnected with socket id: ${socket.id} (${player?.id})`
         );
+    };
+
+    private sendChatroomList = (socket: Socket) => {
+        if (socket) {
+            const clientData = this.chatRooms.map((chatRoom) => {
+                return chatRoom.getRoomObject();
+            });
+
+            socket.emit("chatroomList", JSON.stringify(clientData));
+        }
     };
 }
 

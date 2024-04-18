@@ -1,6 +1,6 @@
 /* Import */
-import { Socket } from "socket.io";
 import Player from "../player/player";
+import { roomLayoutInterface } from "../interface/interface";
 
 /* ChatRoom class */
 class ChatRoom {
@@ -11,7 +11,7 @@ class ChatRoom {
     private paticipants: Player[] = [];
     private capacity: number;
     private status: boolean;
-    private layout: string;
+    private layout: roomLayoutInterface;
 
     /* Constructor */
     constructor(
@@ -20,7 +20,7 @@ class ChatRoom {
         description: string,
         capacity: number,
         status: boolean,
-        layout: string
+        layout: roomLayoutInterface
     ) {
         this.id = id;
         this.name = name;
@@ -32,73 +32,17 @@ class ChatRoom {
 
     /* Methods */
 
-    // Get the room id
-    public getRoomId = (): number => {
-        return this.id;
-    };
-
-    // Get the room name
-    public getRoomName = (): string => {
-        return this.name;
-    };
-
-    // Get the room description
-    public getRoomDescription = (): string => {
-        return this.description;
-    };
-
-    // Get the room capacity
-    public getRoomCapacity = (): number => {
-        return this.capacity;
-    };
-
-    // Get the remaining capacity in the room
-    public getCapacityRemaining = (): number => {
-        return this.capacity - this.paticipants.length;
-    };
-
-    // Get participants in the room
-    public getRoomParticipants = (): Player[] => {
-        return this.paticipants;
-    };
-
-    // Check if the room is full
-    public isRoomFull = (): boolean => {
-        return this.paticipants.length === this.capacity;
-    };
-
-    // Get the room status
-    public getRoomStatus = (): boolean => {
-        return this.status;
-    };
-
-    // Get the room layout
-    public getRoomLayout = (): string => {
-        return this.layout;
-    };
-
-    // Add a participant to the room
-    public addParticipant = (player: Player) => {
-        if (!this.isRoomFull()) {
-            this.paticipants.push(player);
-            // player.setCurrentRoom(this);
-
-            return true;
-        }
-
-        return false;
-    };
-
-    // Remove a participant from the room
-    public removeParticipant = (player: Player): boolean => {
-        const index = this.paticipants.indexOf(player);
-
-        if (index !== -1) {
-            this.paticipants.splice(index, 1);
-            return true;
-        }
-
-        return false;
+    // Get room object for client
+    public getRoomObject = () => {
+        return {
+            id: this.id,
+            name: this.name,
+            description: this.description,
+            capacity: this.capacity,
+            remaining: this.capacity - this.paticipants.length,
+            status: this.status,
+            layout: this.layout,
+        };
     };
 }
 

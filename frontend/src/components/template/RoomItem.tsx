@@ -5,7 +5,7 @@ import Button from '@/components/ui/Button'
 import { HiCheckCircle, HiMinusCircle } from 'react-icons/hi'
 
 const RoomItem = ({ data }: { data: any }) => {
-    const { id, name, description, capacity, remaining, status } = data
+    const { name, description, capacity, remaining, status } = data
 
     return (
         <Card bodyClass="h-full">
