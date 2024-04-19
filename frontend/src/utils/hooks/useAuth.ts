@@ -11,6 +11,7 @@ import { REDIRECT_URL_KEY } from '@/constants/app.constant'
 import { useNavigate } from 'react-router-dom'
 import useQuery from './useQuery'
 import type { SignInCredential, SignUpCredential } from '@/@types/auth'
+import { useGameContext } from '@/context/gameContext'
 
 type Status = 'success' | 'failed'
 
@@ -134,7 +135,14 @@ function useAuth() {
     const signOut = async () => {
         await apiSignOut()
         handleSignOut()
+
+        if (game) {
+            game.disconnectedServer()
+        }
     }
+
+    const { game } = useGameContext()
+    game?.socket?.on('duplicateLogin', signOut)
 
     return {
         authenticated: signedIn,

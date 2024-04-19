@@ -3,14 +3,17 @@ import ChatRoom from '../room/chatroom'
 
 class Game {
     public socket: Socket | null = null
-    private id: number
     private authenticated: boolean
+    private id: number
     public chatRooms: ChatRoom[] = []
     public currentRoom: ChatRoom | null = null
 
     constructor(authenticated: boolean, id: number) {
-        this.id = id
+        this.socket = null
         this.authenticated = authenticated
+        this.id = id
+        this.chatRooms = []
+        this.currentRoom = null
 
         this.initializeSocketConnection()
         this.setupEventListeners()
@@ -83,8 +86,6 @@ class Game {
 
                 this.chatRooms.push(roomObject)
             })
-
-            console.log(`[Game] ${this.chatRooms.length} Rooms initialized`)
         }
     }
 
@@ -94,7 +95,17 @@ class Game {
         }
     }
 
-    private disconnectedServer = () => {
+    public disconnectedServer = () => {
+        if (this.socket) {
+            this.socket.close()
+        }
+
+        this.socket = null
+        this.id = 0
+        this.authenticated = false
+        this.chatRooms = []
+        this.currentRoom = null
+
         console.log('Disconnected from server')
     }
 }

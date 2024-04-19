@@ -68,6 +68,8 @@ class ChatRoom {
         this.paticipants = this.paticipants.filter(
             (p) => p.getId() !== player.getId()
         );
+
+        console.log(`[Game] Player removed from room ${this.id}`);
     };
 }
 

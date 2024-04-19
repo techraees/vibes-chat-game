@@ -11,11 +11,13 @@ class Game {
 
     constructor(io: Server) {
         this.io = io;
+        this.chatRooms = [];
+        this.players = [];
+
         this.initializeRooms();
         this.initializeSocketConnection();
     }
 
-    // InitializeRooms
     private initializeRooms = () => {
         Rooms.forEach((room) => {
             const chatRoom = new ChatRoom(
@@ -33,47 +35,48 @@ class Game {
         console.log(`[Game] ${this.chatRooms.length} Rooms initialized`);
     };
 
-    // Initialize socket connection
     private initializeSocketConnection = () => {
-        if (this.io) {
-            this.io.on("connection", (socket: Socket) => {
-                const userId = socket.handshake.query.userId;
+        try {
+            if (this.io) {
+                this.io.on("connection", (socket: Socket) => {
+                    const userId = socket.handshake.query.userId;
 
-                const playerCheck = this.players.find(
-                    (player) => player.id === userId
-                );
+                    const playerCheck = this.players.find(
+                        (player) => player.id === userId
+                    );
 
-                if (!playerCheck) {
-                    // Create player and add to players array
+                    if (playerCheck) {
+                        const playerCheckSocket = playerCheck.getSocket();
+                        playerCheckSocket.emit("duplicateLogin");
+                        this.disconnectPlayer(playerCheckSocket);
+                    }
+
                     this.createPlayer(socket);
 
-                    // Listen for events
-                    socket.on("disconnect", () =>
-                        this.disconnectPlayer(socket)
-                    );
-                    socket.on("requestChatroomList", () =>
-                        this.sendChatroomList(socket)
-                    );
-                    socket.on("joinRoom", (data) =>
-                        this.joinRoom(socket, data)
-                    );
-                } else {
-                    console.log(
-                        `[Game] Player already connected with socket id: ${socket.id} (${userId})`
-                    );
-
-                    socket.disconnect();
-                }
-            });
+                    if (socket) {
+                        socket.on("disconnect", () =>
+                            this.disconnectPlayer(socket)
+                        );
+                        socket.on("requestChatroomList", () =>
+                            this.sendChatroomList(socket)
+                        );
+                        socket.on("joinRoom", (roomId) =>
+                            this.joinRoom(socket, roomId)
+                        );
+                    }
+                });
+            }
+        } catch (error) {
+            console.log(`[Game] Error: ${error}`);
         }
     };
 
-    // Create player function
-    private createPlayer = (socket: Socket) => {
+    private createPlayer = async (socket: Socket) => {
         const userId = socket.handshake.query.userId;
 
         if (userId) {
-            User.findById(userId).then((user) => {
+            try {
+                const user = await User.findById(userId);
                 if (user) {
                     const player = new Player(
                         user._id.toString(),
@@ -83,16 +86,17 @@ class Game {
                     );
 
                     this.players.push(player);
-                }
-            });
-        }
 
-        console.log(
-            `[Game] Player created with socket id: ${socket.id} (${userId})`
-        );
+                    console.log(
+                        `[Game] Player created with socket id: ${socket.id} (${userId}). New connected players: ${this.players.length}`
+                    );
+                }
+            } catch (error) {
+                console.log(`[Game] Error creating player: ${error}`);
+            }
+        }
     };
 
-    // Disconnect player function
     private disconnectPlayer = (socket: Socket) => {
         const player = this.players.find((player) => player.socket === socket);
 
@@ -101,18 +105,17 @@ class Game {
                 room.paticipants.includes(player)
             );
 
+            const playerIndex = this.players.indexOf(player);
+            if (playerIndex > -1) {
+                this.players.splice(playerIndex, 1);
+            }
+
             if (chatRoom) {
                 chatRoom.removePlayer(player);
             }
 
-            this.players = this.players.filter(
-                (player) => player.socket !== socket
-            );
+            player.getSocket().disconnect();
         }
-
-        console.log(
-            `[Game] Player disconnected with socket id: ${socket.id} (${player?.id})`
-        );
     };
 
     private sendChatroomList = (socket: Socket) => {
@@ -140,9 +143,7 @@ class Game {
                 roomCheck.removePlayer(player);
             } else {
                 chatRoom.addPlayer(player);
-
                 socket.join(`room-${roomId}`);
-
                 socket.emit(
                     "joinRoom",
                     JSON.stringify(chatRoom.getRoomObject())
