@@ -1,6 +1,9 @@
 /* Import */
 import { Socket } from "socket.io";
-import { PlayerInterface } from "../interface/interface";
+import {
+    PlayerInterface,
+    PlayerPositionInterface,
+} from "../interface/interface";
 
 /* Player class */
 class Player implements PlayerInterface {
@@ -9,7 +12,7 @@ class Player implements PlayerInterface {
     public username: string;
     public socket: Socket;
     public currentRoom: number | null;
-    public position: object;
+    public position: PlayerPositionInterface;
 
     /* Constructor */
     constructor(id: string, username: string, socket: Socket) {
@@ -73,7 +76,7 @@ class Player implements PlayerInterface {
     };
 
     // Set the player's position
-    public setPosition = (position: object) => {
+    public setPosition = (position: PlayerPositionInterface) => {
         this.position = position;
     };
 }

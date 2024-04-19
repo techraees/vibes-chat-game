@@ -1,17 +1,17 @@
 import { Socket } from "socket.io";
 import Player from "../player/player";
 
-// Player Interface for server
+// Interface for a player on the server
 export interface PlayerInterface {
     id: string;
     username: string;
     socket: Socket;
     currentRoom: number | null;
-    position: object;
+    position: PlayerPositionInterface;
 }
 
-// Room Interface for server
-export interface roomInterface {
+// Interface for a room on the server
+export interface RoomInterface {
     id: number;
     name: string;
     description: string;
@@ -20,8 +20,8 @@ export interface roomInterface {
     status: boolean;
 }
 
-// Room Data Interface for client server selection
-export interface roomDataInterface {
+// Interface for room data sent to clients for server selection
+export interface RoomDataInterface {
     id: number;
     name: string;
     description: string;
@@ -30,22 +30,22 @@ export interface roomDataInterface {
     status: boolean;
 }
 
-// Player Position Interface for client
-export interface playerPositionInterface {
+// Interface for player position sent to clients
+export interface PlayerPositionInterface {
     x: number;
     y: number;
 }
 
-// User Data Interface for client
-export interface userDataInterface {
+// Interface for user data sent to clients
+export interface UserDataInterface {
     id: string;
     username: string;
-    position: object;
+    position: PlayerPositionInterface;
 }
 
-// Joined Room Interface for client
-export interface joinedRoomInterface {
+// Interface for a joined room sent to clients
+export interface JoinedRoomInterface {
     id: number;
     name: string;
-    users: userDataInterface[];
+    users: UserDataInterface[];
 }

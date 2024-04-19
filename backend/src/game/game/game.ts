@@ -4,7 +4,7 @@ import ChatRoom from "../room/chatroom";
 import Player from "../player/player";
 import User from "../../models/user.model";
 import Rooms from "../room/rooms.json";
-import { roomDataInterface } from "../interface/interface";
+import { RoomDataInterface } from "../interface/interface";
 
 class Game {
     private chatRooms: ChatRoom[] = [];
@@ -98,7 +98,7 @@ class Game {
     }
 
     private sendChatroomList(socket: Socket) {
-        const clientData: roomDataInterface[] = this.chatRooms.map((room) => ({
+        const clientData: RoomDataInterface[] = this.chatRooms.map((room) => ({
             id: room.id,
             name: room.name,
             description: room.description,

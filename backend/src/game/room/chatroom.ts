@@ -1,9 +1,9 @@
 /* Import */
 import Player from "../player/player";
 import {
-    joinedRoomInterface,
-    userDataInterface,
-    playerPositionInterface,
+    JoinedRoomInterface,
+    UserDataInterface,
+    PlayerPositionInterface,
 } from "../interface/interface";
 
 /* ChatRoom class */
@@ -63,12 +63,12 @@ class ChatRoom {
     }
 
     // Generate room data
-    generateRoomData(): joinedRoomInterface {
-        const userData: userDataInterface[] = this.participants.map(
+    generateRoomData(): JoinedRoomInterface {
+        const userData: UserDataInterface[] = this.participants.map(
             (player) => ({
                 id: player.id,
                 username: player.username,
-                position: player.getPosition() as playerPositionInterface,
+                position: player.getPosition() as PlayerPositionInterface,
             })
         );
 
