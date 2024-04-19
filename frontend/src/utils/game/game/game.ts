@@ -105,8 +105,6 @@ class Game {
         this.authenticated = false
         this.chatRooms = []
         this.currentRoom = null
-
-        console.log('Disconnected from server')
     }
 }
 
