@@ -79,7 +79,6 @@ class Game {
             const player = new Player(
                 user._id.toString(),
                 user.username,
-                "",
                 socket
             );
 
@@ -144,11 +143,13 @@ class Game {
 
         if (existingRoom) {
             existingRoom.removePlayer(player);
+            player.resetCurrentRoom();
+
+            // Send event to all participants in the room to update the room data
         }
 
         chatRoom.addPlayer(player);
-        socket.join(`room-${roomId}`);
-        socket.emit("joinRoom", JSON.stringify(chatRoom.getRoomObject()));
+        player.setCurrentRoom(roomId);
     }
 }
 

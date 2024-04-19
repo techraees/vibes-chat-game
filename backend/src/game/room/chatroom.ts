@@ -1,5 +1,6 @@
 /* Import */
 import Player from "../player/player";
+import { Participant } from "../interface/interface";
 import { roomLayoutInterface } from "../interface/interface";
 
 /* ChatRoom class */
@@ -8,7 +9,7 @@ class ChatRoom {
     public id: number;
     public name: string;
     public description: string;
-    public participants: Player[];
+    public participants: Participant[];
     public capacity: number;
     public status: boolean;
     public layout: roomLayoutInterface;
@@ -18,7 +19,7 @@ class ChatRoom {
         id: number,
         name: string,
         description: string,
-        participants: Player[],
+        participants: Participant[],
         capacity: number,
         status: boolean,
         layout: roomLayoutInterface
@@ -34,43 +35,28 @@ class ChatRoom {
 
     /* Methods */
 
-    // Get room object for client
-    public getRoomObject = () => {
-        return {
-            id: this.id,
-            name: this.name,
-            description: this.description,
-            participants: this.getParticipantsForClient(),
-            capacity: this.capacity,
-            status: this.status,
-            layout: this.layout,
-        };
-    };
-
-    // Get participants for client
-    public getParticipantsForClient = () => {
-        if (this.participants.length === 0) {
-            return [];
-        } else {
-            this.participants.map((player) => {
-                return {
-                    id: player.getId(),
-                    name: player.getUsername(),
-                };
-            });
-        }
-    };
-
     // Add player to room
     public addPlayer = (player: Player) => {
-        this.participants.push(player);
+        if (this.isFull()) return false;
+
+        const participantsData: Participant = {
+            id: player.id,
+            username: player.username,
+        };
+
+        this.participants.push(participantsData);
     };
 
     // Remove player from room
     public removePlayer = (player: Player) => {
         this.participants = this.participants.filter(
-            (p) => p.getId() !== player.getId()
+            (participant) => participant.id !== player.id
         );
+    };
+
+    // Check if room is full
+    public isFull = () => {
+        return this.participants.length >= this.capacity;
     };
 }
 

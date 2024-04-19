@@ -1,7 +1,7 @@
-export const debug = (message: string) => {
+export const debug = (message: any) => {
     console.log(`[Game Debug]: ${message}`);
 };
 
-export const debugError = (message: string) => {
+export const debugError = (message: any) => {
     console.log(`[Game Error]: ${message}`);
 };
