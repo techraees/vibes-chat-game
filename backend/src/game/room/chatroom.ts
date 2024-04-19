@@ -1,28 +1,29 @@
 /* Import */
-import { PlayerInterface } from "../interface/interface";
-import { roomLayoutInterface } from "../interface/interface";
 import Player from "../player/player";
+import {
+    joinedRoomInterface,
+    userDataInterface,
+    playerPositionInterface,
+} from "../interface/interface";
 
 /* ChatRoom class */
 class ChatRoom {
     /* Properties */
-    public id: number;
-    public name: string;
-    public description: string;
-    public participants: PlayerInterface[];
-    public capacity: number;
-    public status: boolean;
-    public layout: roomLayoutInterface;
+    readonly id: number;
+    name: string;
+    description: string;
+    participants: Player[];
+    capacity: number;
+    status: boolean;
 
     /* Constructor */
     constructor(
         id: number,
         name: string,
         description: string,
-        participants: PlayerInterface[],
+        participants: Player[],
         capacity: number,
-        status: boolean,
-        layout: roomLayoutInterface
+        status: boolean
     ) {
         this.id = id;
         this.name = name;
@@ -30,28 +31,53 @@ class ChatRoom {
         this.participants = participants;
         this.capacity = capacity;
         this.status = status;
-        this.layout = layout;
     }
 
     /* Methods */
 
     // Add player to room
-    public addPlayer = (player: Player) => {
+    addPlayer(player: Player): boolean {
         if (this.isFull()) return false;
         this.participants.push(player);
-    };
+        return true;
+    }
 
     // Remove player from room
-    public removePlayer = (player: Player) => {
-        this.participants = this.participants.filter(
-            (participant) => participant.id !== player.id
-        );
-    };
+    removePlayer(player: Player): void {
+        this.participants = this.participants.filter((p) => p.id !== player.id);
+    }
 
     // Check if room is full
-    public isFull = () => {
+    isFull(): boolean {
         return this.participants.length >= this.capacity;
-    };
+    }
+
+    // Check if player is in room
+    hasPlayer(player: Player): boolean {
+        return this.participants.some((p) => p.id === player.id);
+    }
+
+    // Get players in room
+    getPlayers(): Player[] {
+        return this.participants;
+    }
+
+    // Generate room data
+    generateRoomData(): joinedRoomInterface {
+        const userData: userDataInterface[] = this.participants.map(
+            (player) => ({
+                id: player.id,
+                username: player.username,
+                position: player.getPosition() as playerPositionInterface,
+            })
+        );
+
+        return {
+            id: this.id,
+            name: this.name,
+            users: userData,
+        };
+    }
 }
 
 /* Export */

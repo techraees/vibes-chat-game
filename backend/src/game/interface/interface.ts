@@ -1,8 +1,7 @@
 import { Socket } from "socket.io";
+import Player from "../player/player";
 
-// Room Layout Interface
-export interface roomLayoutInterface {}
-
+// Player Interface for server
 export interface PlayerInterface {
     id: string;
     username: string;
@@ -11,17 +10,17 @@ export interface PlayerInterface {
     position: object;
 }
 
-// Room Interface
+// Room Interface for server
 export interface roomInterface {
     id: number;
     name: string;
     description: string;
-    participants: PlayerInterface[];
+    participants: Player[];
     capacity: number;
     status: boolean;
-    layout: roomLayoutInterface;
 }
 
+// Room Data Interface for client server selection
 export interface roomDataInterface {
     id: number;
     name: string;
@@ -29,4 +28,24 @@ export interface roomDataInterface {
     participants: number;
     capacity: number;
     status: boolean;
+}
+
+// Player Position Interface for client
+export interface playerPositionInterface {
+    x: number;
+    y: number;
+}
+
+// User Data Interface for client
+export interface userDataInterface {
+    id: string;
+    username: string;
+    position: object;
+}
+
+// Joined Room Interface for client
+export interface joinedRoomInterface {
+    id: number;
+    name: string;
+    users: userDataInterface[];
 }
