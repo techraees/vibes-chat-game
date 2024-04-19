@@ -3,6 +3,7 @@
         "id": 1,
         "name": "Cafe",
         "description": "Example description for a cafe. A cozy place where conversations flow as freely as the coffee.",
+        "participants": [],
         "capacity": 20,
         "status": true,
         "layout": {}
@@ -11,6 +12,7 @@
         "id": 2,
         "name": "Park",
         "description": "Example description for a park. A place where people come to relax and enjoy the outdoors.",
+        "participants": [],
         "capacity": 20,
         "status": false,
         "layout": {}
@@ -19,6 +21,7 @@
         "id": 3,
         "name": "Bus Stop",
         "description": "Example description for a bus stop. A place where people come and go, waiting for their ride to arrive.",
+        "participants": [],
         "capacity": 20,
         "status": true,
         "layout": {}
@@ -27,6 +30,7 @@
         "id": 4,
         "name": "Campus",
         "description": "Example description for a campus. A place where students come to learn and grow.",
+        "participants": [],
         "capacity": 20,
         "status": true,
         "layout": {}
@@ -35,6 +39,7 @@
         "id": 5,
         "name": "Stage",
         "description": "Example description for a stage. A place where performers come to showcase their talents.",
+        "participants": [],
         "capacity": 20,
         "status": true,
         "layout": {}
@@ -43,6 +48,7 @@
         "id": 6,
         "name": "Beach",
         "description": "Example description for a beach. A place where people come to relax and enjoy the sun and sand.",
+        "participants": [],
         "capacity": 20,
         "status": true,
         "layout": {}
@@ -51,6 +57,7 @@
         "id": 7,
         "name": "Mall",
         "description": "Example description for a mall. A place where people come to shop and socialize.",
+        "participants": [],
         "capacity": 20,
         "status": true,
         "layout": {}
@@ -59,6 +66,7 @@
         "id": 8,
         "name": "Hall",
         "description": "Example description for a hall. A place where events and gatherings are held.",
+        "participants": [],
         "capacity": 20,
         "status": true,
         "layout": {}
@@ -67,6 +75,7 @@
         "id": 9,
         "name": "Graveyard",
         "description": "Example description for a graveyard. A place where people come to pay their respects to the deceased.",
+        "participants": [],
         "capacity": 20,
         "status": true,
         "layout": {}

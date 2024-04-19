@@ -1,170 +1,155 @@
-/* Importing required modules */
 import { Server, Socket } from "socket.io";
+import { debug, debugError } from "../utils/utils";
 import ChatRoom from "../room/chatroom";
 import Player from "../player/player";
 import User from "../../models/user.model";
 import Rooms from "../room/rooms.json";
+import { roomInterface } from "../interface/interface";
 
-/* Game class is the main class that handles the game logic and socket connections */
 class Game {
-    /* Properties */
     private chatRooms: ChatRoom[] = [];
     private players: Player[] = [];
     private io: Server;
 
-    /* Constructor */
+    // Initialize the chat rooms and socket connections
     constructor(io: Server) {
-        // Initialize Object properties
         this.io = io;
-        this.chatRooms = [];
-        this.players = [];
 
-        // Initialize the game
         this.initializeRooms();
         this.initializeSocketConnection();
     }
 
-    /* Methods */
+    // Initialize chat rooms from pre-defined data
+    private initializeRooms() {
+        this.chatRooms = [];
 
-    // Initialize the rooms
-    private initializeRooms = () => {
-        Rooms.forEach((room) => {
+        Rooms.forEach((roomData: roomInterface) => {
             const chatRoom = new ChatRoom(
-                room.id,
-                room.name,
-                room.description,
-                room.capacity,
-                room.status,
-                room.layout
+                roomData.id,
+                roomData.name,
+                roomData.description,
+                roomData.participants,
+                roomData.capacity,
+                roomData.status,
+                roomData.layout
             );
 
             this.chatRooms.push(chatRoom);
         });
 
-        console.log(`[Game] ${this.chatRooms.length} Rooms initialized`);
-    };
+        debug(`Rooms initialized: ${this.chatRooms.length}`);
+    }
 
-    // Initialize the socket connection
-    private initializeSocketConnection = () => {
+    // Initialize socket connections for handling client connections
+    private initializeSocketConnection() {
+        if (!this.io) return;
+
+        this.io.on("connection", (socket: Socket) => {
+            this.handleConnection(socket);
+        });
+    }
+
+    // Handle new client connections
+    private async handleConnection(socket: Socket) {
         try {
-            if (this.io) {
-                this.io.on("connection", (socket: Socket) => {
-                    const userId = socket.handshake.query.userId;
+            const userId = socket.handshake.query.userId as string;
+            if (!userId) return;
 
-                    const playerCheck = this.players.find(
-                        (player) => player.id === userId
-                    );
+            const existingPlayer = this.players.find(
+                (player) => player.id === userId
+            );
 
-                    if (playerCheck) {
-                        const playerCheckSocket = playerCheck.getSocket();
-                        playerCheckSocket.emit("duplicateLogin");
-                        this.disconnectPlayer(playerCheckSocket);
-                    }
-
-                    this.createPlayer(socket);
-
-                    if (socket) {
-                        socket.on("disconnect", () =>
-                            this.disconnectPlayer(socket)
-                        );
-                        socket.on("requestChatroomList", () =>
-                            this.sendChatroomList(socket)
-                        );
-                        socket.on("joinRoom", (roomId) =>
-                            this.joinRoom(socket, roomId)
-                        );
-                    }
-                });
+            if (existingPlayer) {
+                this.handleDuplicateLogin(existingPlayer);
             }
-        } catch (error) {
-            console.log(`[Game] Error: ${error}`);
+
+            await this.createPlayer(socket, userId);
+
+            this.attachSocketEvents(socket);
+        } catch (error: any) {
+            debugError(`Error handling connection: ${error}`);
         }
-    };
+    }
 
-    // Create a player
-    private createPlayer = async (socket: Socket) => {
-        const userId = socket.handshake.query.userId;
+    // Create a new player instance for the connected user
+    private async createPlayer(socket: Socket, userId: string) {
+        const user = await User.findById(userId);
 
-        if (userId) {
-            try {
-                const user = await User.findById(userId);
-                if (user) {
-                    const player = new Player(
-                        user._id.toString(),
-                        user.username,
-                        "",
-                        socket
-                    );
+        if (user) {
+            const player = new Player(
+                user._id.toString(),
+                user.username,
+                "",
+                socket
+            );
 
-                    this.players.push(player);
+            this.players.push(player);
 
-                    console.log(
-                        `[Game] Player created with socket id: ${socket.id} (${userId}). New connected players: ${this.players.length}`
-                    );
-                }
-            } catch (error) {
-                console.log(`[Game] Error creating player: ${error}`);
-            }
+            debug(
+                `[Game] Player created with socket id: ${socket.id} (${userId}). New connected players: ${this.players.length}`
+            );
         }
-    };
+    }
 
-    // Disconnect a player
-    private disconnectPlayer = (socket: Socket) => {
-        const player = this.players.find((player) => player.socket === socket);
+    // Handle duplicate login attempts by sending a notification to the existing player
+    private handleDuplicateLogin(player: Player) {
+        const playerSocket = player.getSocket();
+        playerSocket.emit("duplicateLogin");
+        this.disconnectPlayer(playerSocket);
+    }
 
-        if (player) {
+    // Attach socket event listeners for the client socket
+    private attachSocketEvents(socket: Socket) {
+        this.sendChatroomList(socket);
+
+        socket.on("disconnect", () => this.disconnectPlayer(socket));
+        socket.on("joinRoom", (roomId) => this.joinRoom(socket, roomId));
+    }
+
+    // Handle player disconnection from the game
+    private disconnectPlayer(socket: Socket) {
+        const playerIndex = this.players.findIndex(
+            (player) => player.socket === socket
+        );
+
+        if (playerIndex !== -1) {
+            const player = this.players.splice(playerIndex, 1)[0];
+
             const chatRoom = this.chatRooms.find((room) =>
-                room.paticipants.includes(player)
+                room.participants.includes(player)
             );
 
-            const playerIndex = this.players.indexOf(player);
-            if (playerIndex > -1) {
-                this.players.splice(playerIndex, 1);
-            }
-
-            if (chatRoom) {
-                chatRoom.removePlayer(player);
-            }
-
-            player.getSocket().disconnect();
+            if (chatRoom) chatRoom.removePlayer(player);
+            socket.disconnect();
         }
-    };
+    }
 
-    // Send chatroom list to the client
-    private sendChatroomList = (socket: Socket) => {
-        if (socket) {
-            const clientData: ChatRoom[] = [];
+    // Send the list of available chat rooms to the client
+    private sendChatroomList(socket: Socket) {
+        const clientData: ChatRoom[] = this.chatRooms.slice();
+        socket.emit("chatroomList", JSON.stringify(clientData));
+    }
 
-            this.chatRooms.map((chatRoom) => {
-                clientData.push(chatRoom);
-            });
-
-            socket.emit("chatroomList", JSON.stringify(clientData));
-        }
-    };
-
-    // Join a room
-    private joinRoom = (socket: Socket, roomId: number) => {
+    // Handle a player's request to join a chat room
+    private joinRoom(socket: Socket, roomId: number) {
         const chatRoom = this.chatRooms.find((room) => room.id === roomId);
+        if (!chatRoom) return;
+
         const player = this.players.find((player) => player.socket === socket);
+        if (!player) return;
 
-        if (chatRoom && player) {
-            const roomCheck = this.chatRooms.find((room) =>
-                room.paticipants.includes(player)
-            );
+        const existingRoom = this.chatRooms.find((room) =>
+            room.participants.includes(player)
+        );
 
-            if (roomCheck) {
-                roomCheck.removePlayer(player);
-            } else {
-                chatRoom.addPlayer(player);
-                socket.join(`room-${roomId}`);
-                socket.emit(
-                    "joinRoom",
-                    JSON.stringify(chatRoom.getRoomObject())
-                );
-            }
+        if (existingRoom) {
+            existingRoom.removePlayer(player);
         }
-    };
+
+        chatRoom.addPlayer(player);
+        socket.join(`room-${roomId}`);
+        socket.emit("joinRoom", JSON.stringify(chatRoom.getRoomObject()));
+    }
 }
 
 export default Game;

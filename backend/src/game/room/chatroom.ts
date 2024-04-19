@@ -8,7 +8,7 @@ class ChatRoom {
     public id: number;
     public name: string;
     public description: string;
-    public paticipants: Player[] = [];
+    public participants: Player[];
     public capacity: number;
     public status: boolean;
     public layout: roomLayoutInterface;
@@ -18,6 +18,7 @@ class ChatRoom {
         id: number,
         name: string,
         description: string,
+        participants: Player[],
         capacity: number,
         status: boolean,
         layout: roomLayoutInterface
@@ -25,6 +26,7 @@ class ChatRoom {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.participants = participants;
         this.capacity = capacity;
         this.status = status;
         this.layout = layout;
@@ -38,7 +40,7 @@ class ChatRoom {
             id: this.id,
             name: this.name,
             description: this.description,
-            paticipants: this.getParticipantsForClient(),
+            participants: this.getParticipantsForClient(),
             capacity: this.capacity,
             status: this.status,
             layout: this.layout,
@@ -47,10 +49,10 @@ class ChatRoom {
 
     // Get participants for client
     public getParticipantsForClient = () => {
-        if (this.paticipants.length === 0) {
+        if (this.participants.length === 0) {
             return [];
         } else {
-            this.paticipants.map((player) => {
+            this.participants.map((player) => {
                 return {
                     id: player.getId(),
                     name: player.getUsername(),
@@ -61,12 +63,12 @@ class ChatRoom {
 
     // Add player to room
     public addPlayer = (player: Player) => {
-        this.paticipants.push(player);
+        this.participants.push(player);
     };
 
     // Remove player from room
     public removePlayer = (player: Player) => {
-        this.paticipants = this.paticipants.filter(
+        this.participants = this.participants.filter(
             (p) => p.getId() !== player.getId()
         );
     };

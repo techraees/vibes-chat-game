@@ -1,11 +1,8 @@
 import { useState } from 'react'
 import Canvas from '../components/template/Canvas'
 import Rooms from '@/components/template/Rooms'
-import { useGameContext } from '@/context/gameContext'
 
 const Chat = () => {
-    const { game } = useGameContext()
-
     // Get user screen dimensions
     const userScreenX = window.innerWidth
     const userScreenY = window.innerHeight
