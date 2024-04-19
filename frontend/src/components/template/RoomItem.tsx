@@ -59,7 +59,12 @@ const RoomItem: React.FC<RoomItemProps> = ({ data, setSelectedRoomId }) => {
                     />
                 </div>
                 <div className="mt-3">
-                    <Button size="sm" block onClick={handleJoinRoom}>
+                    <Button
+                        size="sm"
+                        block
+                        onClick={handleJoinRoom}
+                        disabled={!status ? true : false}
+                    >
                         Join {name}
                     </Button>
                 </div>
