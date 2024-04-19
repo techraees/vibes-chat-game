@@ -1,6 +1,6 @@
 import Player from '../player/player'
 
-export interface currentRoomInterface {
+export interface CurrentRoomInterface {
     id: number
     participants: Player[]
     capacity: number
@@ -8,9 +8,7 @@ export interface currentRoomInterface {
     layout: object
 }
 
-export interface roomLayoutInterface {}
-
-export interface roomInterface {
+export interface RoomInterface {
     id: number
     name: string
     description: string

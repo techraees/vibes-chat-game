@@ -1,7 +1,7 @@
 import { io, Socket } from 'socket.io-client'
-import { debug, debugError } from '../utils/utils'
-import { roomInterface } from '../interface/interface'
+import { debug } from '../utils/utils'
 import ChatRoom from '../room/chatroom'
+import { RoomInterface } from '../interface/interface'
 
 class Game {
     public socket: Socket | null = null
@@ -41,9 +41,9 @@ class Game {
     }
 
     private initializeChatrooms = (chatrooms: string) => {
-        const rooms = JSON.parse(chatrooms)
+        const rooms: RoomInterface[] = JSON.parse(chatrooms)
 
-        rooms.forEach((room: roomInterface) => {
+        rooms.forEach((room) => {
             const chatRoom = new ChatRoom(
                 room.id,
                 room.name,
@@ -61,14 +61,16 @@ class Game {
         debug('Connected to server')
     }
 
-    public disconnectedServer = () => {
+    private disconnectedServer = () => {
         this.closeSocket()
     }
 
     private closeSocket = () => {
-        this.socket?.close()
-        this.socket = null
-        this.id = null
+        if (this.socket) {
+            this.socket.close()
+            this.socket = null
+            this.id = null
+        }
     }
 }
 
