@@ -3,5 +3,5 @@ export type VerifyCredential = {
 }
 
 export type VerifyCredentialResponse = {
-    message: string
+    id: number
 }

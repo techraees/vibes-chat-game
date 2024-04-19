@@ -40,7 +40,16 @@ export interface PlayerPositionInterface {
 export interface UserDataInterface {
     id: string;
     username: string;
+    married: number;
     position: PlayerPositionInterface;
+}
+
+export interface OwnUserDataInterface {
+    id: string;
+    username: string;
+    vCoins: number;
+    vCard: number;
+    married: number;
 }
 
 // Interface for a joined room sent to clients

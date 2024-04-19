@@ -2,6 +2,7 @@ import Game from '@/utils/game/game/game'
 
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useAppSelector } from '@/store'
+import { apiVerify } from '@/services/UserVerificationService'
 
 interface GameContextValue {
     game: Game | null
@@ -22,16 +23,27 @@ export const GameContextProvider = ({
 }) => {
     const [game, setGame] = useState<Game | null>(null)
     const auth = useAppSelector((state) => state.auth)
+    const username = useAppSelector((state) => state.auth.user.username ?? '')
 
     useEffect(() => {
         try {
             if (auth.session.signedIn) {
-                const gameInstance = new Game(
-                    auth.session.signedIn,
-                    auth.user._id ?? 0,
-                )
+                ;(async () => {
+                    const result = await apiVerify({
+                        username,
+                    })
 
-                setGame(gameInstance)
+                    if (result) {
+                        console.log('result.data.id:', result.data.id)
+
+                        const gameInstance = new Game(
+                            auth.session.signedIn,
+                            result.data.id,
+                        )
+
+                        setGame(gameInstance)
+                    }
+                })()
             }
         } catch (error) {
             console.error('Error initializing game:', error)

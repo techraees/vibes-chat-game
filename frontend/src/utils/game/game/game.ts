@@ -2,12 +2,15 @@ import { io, Socket } from 'socket.io-client'
 import { debug } from '../utils/utils'
 import ChatRoom from '../room/chatroom'
 import { RoomInterface } from '../interface/interface'
+import Player from '../player/player'
 
 class Game {
     public socket: Socket | null = null
     private authenticated: boolean
     private id: number | null = null
     public chatRooms: ChatRoom[] = []
+    private player: Player | null = null
+    private currentRoom: ChatRoom | null = null
 
     constructor(authenticated: boolean, id: number) {
         this.authenticated = authenticated
@@ -33,11 +36,23 @@ class Game {
         this.socket?.on('connect_error', this.disconnectedServer)
         this.socket?.on('chatroomList', this.initializeChatrooms)
         this.socket?.on('joinRoom', this.joinRoom)
+        this.socket?.on('setPlayerData', this.setPlayerData)
+    }
+
+    private setPlayerData = (player: string) => {
+        const playerObject = JSON.parse(player)
+
+        this.player = new Player(
+            playerObject.id,
+            playerObject.username,
+            playerObject.vCoins,
+            playerObject.vCard,
+            playerObject.married,
+        )
     }
 
     private joinRoom = (room: string) => {
         const roomObject = JSON.parse(room)
-        // Todo: Implement joinRoom
     }
 
     private initializeChatrooms = (chatrooms: string) => {

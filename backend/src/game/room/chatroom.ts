@@ -68,6 +68,7 @@ class ChatRoom {
             (player) => ({
                 id: player.id,
                 username: player.username,
+                married: player.married,
                 position: player.getPosition() as PlayerPositionInterface,
             })
         );

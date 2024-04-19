@@ -58,13 +58,22 @@ class Game {
 
     private async createPlayer(socket: Socket, userId: string) {
         const user = await User.findById(userId);
+
         if (user) {
             const player = new Player(
                 user._id.toString(),
                 user.username,
+                user.vCoins,
+                user.vCard,
+                user.married,
                 socket
             );
+
             this.players.push(player);
+
+            const playerData = player.generatePlayerData();
+            socket.emit("setPlayerData", JSON.stringify(playerData));
+
             debug(
                 `Player created with socket id: ${socket.id} (${userId}). New connected players: ${this.players.length}`
             );
@@ -106,6 +115,7 @@ class Game {
             capacity: room.capacity,
             status: room.status,
         }));
+
         socket.emit("chatroomList", JSON.stringify(clientData));
     }
 
@@ -129,7 +139,9 @@ class Game {
 
         const initData = chatRoom.generateRoomData();
         // Send event to user for initializing the room
-        console.log(initData);
+        socket.emit("joinRoom", JSON.stringify(initData));
+
+        // Send event to all users in the room for updating the room
     }
 }
 
