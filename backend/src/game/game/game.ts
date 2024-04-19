@@ -66,7 +66,7 @@ class Game {
             );
             this.players.push(player);
             debug(
-                `[Game] Player created with socket id: ${socket.id} (${userId}). New connected players: ${this.players.length}`
+                `Player created with socket id: ${socket.id} (${userId}). New connected players: ${this.players.length}`
             );
         }
     }
