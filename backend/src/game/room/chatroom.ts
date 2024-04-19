@@ -45,6 +45,7 @@ class ChatRoom {
         };
     };
 
+    // Get participants for client
     public getParticipantsForClient = () => {
         if (this.paticipants.length === 0) {
             return [];
@@ -68,8 +69,6 @@ class ChatRoom {
         this.paticipants = this.paticipants.filter(
             (p) => p.getId() !== player.getId()
         );
-
-        console.log(`[Game] Player removed from room ${this.id}`);
     };
 }
 

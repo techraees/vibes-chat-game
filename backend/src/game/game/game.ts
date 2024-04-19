@@ -1,23 +1,32 @@
+/* Importing required modules */
 import { Server, Socket } from "socket.io";
 import ChatRoom from "../room/chatroom";
 import Player from "../player/player";
 import User from "../../models/user.model";
 import Rooms from "../room/rooms.json";
 
+/* Game class is the main class that handles the game logic and socket connections */
 class Game {
+    /* Properties */
     private chatRooms: ChatRoom[] = [];
     private players: Player[] = [];
     private io: Server;
 
+    /* Constructor */
     constructor(io: Server) {
+        // Initialize Object properties
         this.io = io;
         this.chatRooms = [];
         this.players = [];
 
+        // Initialize the game
         this.initializeRooms();
         this.initializeSocketConnection();
     }
 
+    /* Methods */
+
+    // Initialize the rooms
     private initializeRooms = () => {
         Rooms.forEach((room) => {
             const chatRoom = new ChatRoom(
@@ -35,6 +44,7 @@ class Game {
         console.log(`[Game] ${this.chatRooms.length} Rooms initialized`);
     };
 
+    // Initialize the socket connection
     private initializeSocketConnection = () => {
         try {
             if (this.io) {
@@ -71,6 +81,7 @@ class Game {
         }
     };
 
+    // Create a player
     private createPlayer = async (socket: Socket) => {
         const userId = socket.handshake.query.userId;
 
@@ -97,6 +108,7 @@ class Game {
         }
     };
 
+    // Disconnect a player
     private disconnectPlayer = (socket: Socket) => {
         const player = this.players.find((player) => player.socket === socket);
 
@@ -118,6 +130,7 @@ class Game {
         }
     };
 
+    // Send chatroom list to the client
     private sendChatroomList = (socket: Socket) => {
         if (socket) {
             const clientData: ChatRoom[] = [];
@@ -130,6 +143,7 @@ class Game {
         }
     };
 
+    // Join a room
     private joinRoom = (socket: Socket, roomId: number) => {
         const chatRoom = this.chatRooms.find((room) => room.id === roomId);
         const player = this.players.find((player) => player.socket === socket);
