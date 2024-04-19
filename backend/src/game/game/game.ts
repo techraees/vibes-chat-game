@@ -4,7 +4,7 @@ import ChatRoom from "../room/chatroom";
 import Player from "../player/player";
 import User from "../../models/user.model";
 import Rooms from "../room/rooms.json";
-import { roomInterface } from "../interface/interface";
+import { roomInterface, roomDataInterface } from "../interface/interface";
 
 class Game {
     private chatRooms: ChatRoom[] = [];
@@ -125,7 +125,17 @@ class Game {
 
     // Send the list of available chat rooms to the client
     private sendChatroomList(socket: Socket) {
-        const clientData: ChatRoom[] = this.chatRooms.slice();
+        const clientData: roomDataInterface[] = this.chatRooms.map((room) => {
+            return {
+                id: room.id,
+                name: room.name,
+                description: room.description,
+                participants: room.participants.length,
+                capacity: room.capacity,
+                status: room.status,
+            };
+        });
+
         socket.emit("chatroomList", JSON.stringify(clientData));
     }
 
@@ -150,6 +160,17 @@ class Game {
 
         chatRoom.addPlayer(player);
         player.setCurrentRoom(roomId);
+
+        // Send event to all participants in the room to update the room data
+        chatRoom.participants.forEach((participant) => {
+            const user = this.players.find(
+                (player) => player.id === participant.id
+            );
+
+            if (user) {
+                user.getSocket().emit("updateRoom", JSON.stringify(chatRoom));
+            }
+        });
     }
 }
 

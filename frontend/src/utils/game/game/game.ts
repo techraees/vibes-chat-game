@@ -51,7 +51,6 @@ class Game {
                 room.participants,
                 room.capacity,
                 room.status,
-                room.layout,
             )
 
             this.chatRooms.push(chatRoom)

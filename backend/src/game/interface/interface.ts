@@ -3,12 +3,6 @@ import { Socket } from "socket.io";
 // Room Layout Interface
 export interface roomLayoutInterface {}
 
-// Participant interface
-export interface Participant {
-    id: string;
-    username: string;
-}
-
 export interface PlayerInterface {
     id: string;
     username: string;
@@ -22,8 +16,17 @@ export interface roomInterface {
     id: number;
     name: string;
     description: string;
-    participants: Participant[];
+    participants: PlayerInterface[];
     capacity: number;
     status: boolean;
     layout: roomLayoutInterface;
+}
+
+export interface roomDataInterface {
+    id: number;
+    name: string;
+    description: string;
+    participants: number;
+    capacity: number;
+    status: boolean;
 }

@@ -1,7 +1,7 @@
 /* Import */
-import Player from "../player/player";
-import { Participant } from "../interface/interface";
+import { PlayerInterface } from "../interface/interface";
 import { roomLayoutInterface } from "../interface/interface";
+import Player from "../player/player";
 
 /* ChatRoom class */
 class ChatRoom {
@@ -9,7 +9,7 @@ class ChatRoom {
     public id: number;
     public name: string;
     public description: string;
-    public participants: Participant[];
+    public participants: PlayerInterface[];
     public capacity: number;
     public status: boolean;
     public layout: roomLayoutInterface;
@@ -19,7 +19,7 @@ class ChatRoom {
         id: number,
         name: string,
         description: string,
-        participants: Participant[],
+        participants: PlayerInterface[],
         capacity: number,
         status: boolean,
         layout: roomLayoutInterface
@@ -38,13 +38,7 @@ class ChatRoom {
     // Add player to room
     public addPlayer = (player: Player) => {
         if (this.isFull()) return false;
-
-        const participantsData: Participant = {
-            id: player.id,
-            username: player.username,
-        };
-
-        this.participants.push(participantsData);
+        this.participants.push(player);
     };
 
     // Remove player from room
