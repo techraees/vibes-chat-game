@@ -1,14 +1,17 @@
-import Player from '../player/player'
+import {
+    CurrentRoomInterface,
+    CurrentRoomPlayerInterface,
+} from '../interface/interface'
 
-class CurrentRoom {
+class CurrentRoom implements CurrentRoomInterface {
     public id: number
     public name: string
-    public participants: Player[] = []
+    public users: CurrentRoomPlayerInterface[] = []
 
-    constructor(id: number, name: string, participants: Player[]) {
+    constructor(id: number, name: string, users: CurrentRoomPlayerInterface[]) {
         this.id = id
         this.name = name
-        this.participants = participants
+        this.users = users
     }
 }
 

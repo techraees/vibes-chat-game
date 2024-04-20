@@ -1,8 +1,13 @@
 import { io, Socket } from 'socket.io-client'
 import { debug } from '../utils/utils'
 import ChatRoom from '../room/chatroom'
-import { RoomInterface } from '../interface/interface'
+import {
+    RoomInterface,
+    CurrentRoomInterface,
+    CurrentRoomPlayerInterface,
+} from '../interface/interface'
 import Player from '../player/player'
+import CurrentRoom from '../room/currentRoom'
 
 class Game {
     public socket: Socket | null = null
@@ -10,7 +15,7 @@ class Game {
     private id: number | null = null
     public chatRooms: ChatRoom[] = []
     private player: Player | null = null
-    private currentRoom: ChatRoom | null = null
+    private currentRoom: CurrentRoom | null = null
 
     constructor(authenticated: boolean, id: number) {
         this.authenticated = authenticated
@@ -52,7 +57,24 @@ class Game {
     }
 
     private joinRoom = (room: string) => {
-        const roomObject = JSON.parse(room)
+        const roomObject = JSON.parse(room) as CurrentRoomInterface
+
+        const participants: CurrentRoomPlayerInterface[] = roomObject.users.map(
+            (user: CurrentRoomPlayerInterface) => ({
+                id: user.id,
+                username: user.username,
+                married: user.married,
+                position: user.position,
+            }),
+        )
+
+        this.currentRoom = new CurrentRoom(
+            roomObject.id,
+            roomObject.name,
+            participants,
+        )
+
+        console.log(this.currentRoom)
     }
 
     private initializeChatrooms = (chatrooms: string) => {

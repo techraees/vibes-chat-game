@@ -34,8 +34,6 @@ export const GameContextProvider = ({
                     })
 
                     if (result) {
-                        console.log('result.data.id:', result.data.id)
-
                         const gameInstance = new Game(
                             auth.session.signedIn,
                             result.data.id,

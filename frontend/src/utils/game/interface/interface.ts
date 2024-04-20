@@ -1,11 +1,28 @@
-import Player from '../player/player'
+export interface CurrentRoomPlayerInterface {
+    id: string
+    username: string
+    married: number
+    position: PlayerPositionInterface
+}
+
+export interface PlayerInterface {
+    id: string
+    username: string
+    vCoins: number
+    vCard: number
+    married: number
+    position: PlayerPositionInterface
+}
+
+export interface PlayerPositionInterface {
+    x: number
+    y: number
+}
 
 export interface CurrentRoomInterface {
     id: number
-    participants: Player[]
-    capacity: number
-    status: boolean
-    layout: object
+    name: string
+    users: CurrentRoomPlayerInterface[]
 }
 
 export interface RoomInterface {
