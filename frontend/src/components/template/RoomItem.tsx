@@ -3,14 +3,13 @@ import Card from '@/components/ui/Card'
 import ProgressionBar from './ProgressionBar'
 import Button from '@/components/ui/Button'
 import { HiCheckCircle, HiMinusCircle } from 'react-icons/hi'
-import Player from '../../utils/game/player/player'
 
 interface RoomItemProps {
     data: {
         id: number
         name: string
         description: string
-        participants: Player[]
+        participant_count: number
         capacity: number
         status: boolean
     }
@@ -18,14 +17,7 @@ interface RoomItemProps {
 }
 
 const RoomItem: React.FC<RoomItemProps> = ({ data, setSelectedRoomId }) => {
-    const { id, name, description, capacity, participants, status } = data
-    let playerCount = 0
-
-    if (!participants) {
-        playerCount = 0
-    } else {
-        playerCount = participants.length
-    }
+    const { id, name, description, capacity, participant_count, status } = data
 
     const handleJoinRoom = () => {
         setSelectedRoomId(id)
@@ -52,10 +44,7 @@ const RoomItem: React.FC<RoomItemProps> = ({ data, setSelectedRoomId }) => {
                 <p className="mt-4">{description}</p>
                 <div className="mt-3">
                     <ProgressionBar
-                        progression={
-                            ((capacity - (capacity - playerCount)) / capacity) *
-                            100
-                        }
+                        progression={(participant_count / capacity) * 100}
                     />
                 </div>
                 <div className="mt-3">

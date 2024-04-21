@@ -1,11 +1,11 @@
-import Game from '@/utils/game/game/game'
+import GameManager from '@/game/manager/game.manager'
 
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useAppSelector } from '@/store'
 import { apiVerify } from '@/services/UserVerificationService'
 
 interface GameContextValue {
-    game: Game | null
+    game: GameManager | null
 }
 
 const GameContext = createContext<GameContextValue>({
@@ -21,7 +21,7 @@ export const GameContextProvider = ({
 }: {
     children: React.ReactNode
 }) => {
-    const [game, setGame] = useState<Game | null>(null)
+    const [game, setGame] = useState<GameManager | null>(null)
     const auth = useAppSelector((state) => state.auth)
     const username = useAppSelector((state) => state.auth.user.username ?? '')
 
@@ -34,10 +34,7 @@ export const GameContextProvider = ({
                     })
 
                     if (result) {
-                        const gameInstance = new Game(
-                            auth.session.signedIn,
-                            result.data.id,
-                        )
+                        const gameInstance = new GameManager(result.data.id)
 
                         setGame(gameInstance)
                     }

@@ -25,28 +25,28 @@ const Canvas = ({ room, width, height }: CanvasProps) => {
         // Initialize join room
         if (game?.socket && room) {
             game.socket.emit('joinRoom', room)
-        }
-
-        // Initialize canvas
-        if (canvasRef.current) {
-            const canvas = canvasRef.current
-            const context = canvas.getContext('2d')
-
-            // Disable right click
-            canvas.oncontextmenu = (e) => {
-                e.preventDefault()
-                e.stopPropagation()
-            }
 
             // Initialize canvas
-            if (context) {
-            }
+            if (canvasRef.current) {
+                const canvas = canvasRef.current
+                const context = canvas.getContext('2d')
 
-            // Resize canvas
-            window.addEventListener('resize', () => {
-                canvas.width = window.innerWidth
-                canvas.height = window.innerHeight - NAV_ITEM_HEIGHT
-            })
+                if (canvas) {
+                    // Set canvas to current room
+
+                    // Disable right click
+                    canvas.oncontextmenu = (e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                    }
+
+                    // Resize canvas
+                    window.addEventListener('resize', () => {
+                        canvas.width = window.innerWidth
+                        canvas.height = window.innerHeight - NAV_ITEM_HEIGHT
+                    })
+                }
+            }
         }
     }, [])
 
