@@ -5,6 +5,7 @@ import RoomManager from './room.manager';
 import logger from '../../utils/logger';
 import RoomConfig from '../config/room.config';
 import RoomInterface from '../interfaces/server.room.interface';
+import notification from '../../utils/notification';
 
 class GameManager {
   private io: Server;
@@ -64,15 +65,15 @@ class GameManager {
     }
   };
 
-  private findPlayerById(userId: string): PlayerManager | undefined {
+  private findPlayerById = (userId: string): PlayerManager | undefined => {
     return this.players.find((player) => player.id === userId);
-  }
+  };
 
-  private findPlayerBySocket(socket: Socket): PlayerManager | undefined {
+  private findPlayerBySocket = (socket: Socket): PlayerManager | undefined => {
     return this.players.find((player) => player.getSocket() === socket);
-  }
+  };
 
-  private async createPlayer(socket: Socket, userId: string) {
+  private createPlayer = async (socket: Socket, userId: string) => {
     const user = await User.findById(userId);
     if (!user) throw new Error('User not found.');
 
@@ -93,23 +94,29 @@ class GameManager {
     logger.gameDebugMessage(
       `Player created with socket id: ${socket.id} (${userId}). New connected players: ${this.players.length}`,
     );
-  }
+  };
 
-  private sendRoomList(socket: Socket) {
+  private sendRoomList = (socket: Socket) => {
     const roomData = this.rooms.map((room) => room.generateRoomClientData());
     socket.emit('chatroomList', JSON.stringify(roomData));
-  }
+  };
 
-  private handleDuplicateLogin(player: PlayerManager, socket: Socket) {
+  private handleDuplicateLogin = (player: PlayerManager, socket: Socket) => {
     const playerSocket = player.getSocket();
     playerSocket.emit('duplicateLogin');
     this.disconnectPlayer(playerSocket);
-  }
+  };
 
-  private attachSocketEvents(socket: Socket) {
+  private attachSocketEvents = (socket: Socket) => {
     socket.on('disconnect', () => this.disconnectPlayer(socket));
     socket.on('joinRoom', (roomId) => this.joinRoom(socket, roomId));
-  }
+    socket.on('requestRoomUpdate', () => this.updateRooms(socket));
+  };
+
+  private updateRooms = (socket: Socket) => {
+    const roomData = this.rooms.map((room) => room.generateRoomClientData());
+    socket.emit('chatroomList', JSON.stringify(roomData));
+  };
 
   private joinRoom(socket: Socket, roomId: number) {
     const room = this.rooms.find((room) => room.id === roomId);

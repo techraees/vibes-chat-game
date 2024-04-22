@@ -6,7 +6,6 @@ import Theme from '@/components/template/Theme'
 import Layout from '@/components/layouts'
 import './locales'
 import { GameContextProvider } from './context/gameContext'
-const environment = process.env.NODE_ENV
 
 function App() {
     return (

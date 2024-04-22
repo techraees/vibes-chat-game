@@ -43,6 +43,8 @@ class GameManager {
     }
 
     private setChatrooms = (clientData: string) => {
+        this.rooms = []
+
         const roomData: RoomInterface[] = JSON.parse(clientData)
 
         roomData.forEach((roomObject: RoomInterface) => {

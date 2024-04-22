@@ -1,8 +1,13 @@
 import { useState } from 'react'
 import Canvas from '../components/template/Canvas'
 import Rooms from '@/components/template/Rooms'
+import { useGameContext } from '@/context/gameContext'
 
 const Chat = () => {
+    // Get game context
+    const { game } = useGameContext()
+    game?.socket?.emit('requestRoomUpdate')
+
     // Get user screen dimensions
     const userScreenX = window.innerWidth
     const userScreenY = window.innerHeight

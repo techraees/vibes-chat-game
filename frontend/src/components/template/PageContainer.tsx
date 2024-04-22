@@ -7,8 +7,17 @@ import {
 } from '@/constants/theme.constant'
 import type { CommonProps } from '@/@types/common'
 import type { Meta } from '@/@types/routes'
-import type { ElementType, ComponentPropsWithRef } from 'react'
+import type { ElementType, ComponentPropsWithRef, ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
+import { useGameContext } from '@/context/gameContext'
+import toast from '@/components/ui/toast'
+import Notification from '@/components/ui/Notification'
+import {
+    HiBadgeCheck,
+    HiOutlineInformationCircle,
+    HiOutlineHand,
+    HiOutlineExclamation,
+} from 'react-icons/hi'
 
 export interface PageContainerProps extends CommonProps, Meta {
     contained?: boolean
@@ -24,6 +33,34 @@ const CustomHeader = <T extends ElementType>({
     return <Header {...props} />
 }
 
+const displayNotification = (level: string, message: string) => {
+    let icon: ReactNode = null
+    let title: string = ''
+
+    if (level === 'SUCCESS') {
+        icon = <HiBadgeCheck className="text-2xl text-indigo-600" />
+        title = 'Vibes success'
+    } else if (level === 'INFO') {
+        icon = (
+            <HiOutlineInformationCircle className="text-2xl text-indigo-600" />
+        )
+        title = 'Vibes info'
+    } else if (level === 'WARNING') {
+        icon = <HiOutlineHand className="text-2xl text-indigo-600" />
+        title = 'Vibes warning'
+    } else if (level === 'ERROR') {
+        icon = <HiOutlineExclamation className="text-2xl text-indigo-600" />
+        title = 'Vibes error'
+    }
+
+    toast.push(
+        <Notification title={title} customIcon={icon}>
+            {message}
+        </Notification>,
+        { placement: 'bottom-end' },
+    )
+}
+
 const PageContainer = (props: PageContainerProps) => {
     const {
         pageContainerType = 'default',
@@ -36,6 +73,14 @@ const PageContainer = (props: PageContainerProps) => {
 
     const location = useLocation()
     const path = location.pathname
+
+    const { game } = useGameContext()
+
+    game?.socket?.on('notify', (data: string) => {
+        const notifcation = JSON.parse(data)
+
+        displayNotification(notifcation.level, notifcation.message)
+    })
 
     return (
         <div className="h-full flex flex-auto flex-col justify-between">

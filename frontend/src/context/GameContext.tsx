@@ -1,7 +1,6 @@
-import GameManager from '@/game/manager/game.manager'
-
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useAppSelector } from '@/store'
+import GameManager from '@/game/manager/game.manager'
 import { apiVerify } from '@/services/UserVerificationService'
 
 interface GameContextValue {
